@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/groupListFragment">
+    <fragment
+        android:id="@+id/groupListFragment"
+        android:name="com.fimappware.willofthegods.GroupListFragment"
+        android:label="fragment_first"
+        tools:layout="@layout/fragment_group_list" >
+        <action
+            android:id="@+id/action_groupListFragment_to_addEditGroupFragment"
+            app:destination="@id/addEditGroupFragment"
+            app:enterAnim="@anim/fragment_close_enter"
+            app:exitAnim="@anim/fragment_close_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/addEditGroupFragment"
+        android:name="com.fimappware.willofthegods.AddEditGroupFragment"
+        android:label="fragment_second"
+        tools:layout="@layout/fragment_add_edit_group" />
+</navigation>
