@@ -11,15 +11,12 @@ import com.fimappware.willofthegods.data.AppDb
 private const val TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity() , FragmentChangeListener {
-
-
     private val vm : GroupViewModel by viewModels { GroupViewModel.Factory(AppDb.getInstance(this)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

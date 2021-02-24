@@ -7,13 +7,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.fimappware.willofthegods.data.Group
 
-class GroupRecyclerAdapter(private var groups : List<Group>) :  RecyclerView.Adapter<GroupRecyclerAdapter.ViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+class GroupRecyclerAdapter(private var groups : List<Group>) :  RecyclerView.Adapter<GroupRecyclerAdapter.GroupViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.group_layout,parent,false)
-        return ViewHolder(view)
+        return GroupViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: GroupViewHolder, position: Int) {
         holder.bind(groups[position])
     }
 
@@ -26,7 +26,7 @@ class GroupRecyclerAdapter(private var groups : List<Group>) :  RecyclerView.Ada
         notifyDataSetChanged()
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    class GroupViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         private val name = itemView.findViewById<TextView>(R.id.tv_name)
 
         fun bind(group : Group){

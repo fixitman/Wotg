@@ -7,20 +7,16 @@ import com.fimappware.willofthegods.data.AppDb
 import com.fimappware.willofthegods.data.Group
 import kotlinx.coroutines.launch
 
-private const val TAG = "GroupViewModel"
-
 class GroupViewModel(val appDb: AppDb, application: Application) : AndroidViewModel(application) {
 
     private var groups = MutableLiveData<List<Group>>()
     val groupList : LiveData<List<Group>> = groups
-
 
     init {
         viewModelScope.launch{
             groups.value = appDb.groupDao().getAll()
         }
     }
-
 
     class Factory(private val appDb: AppDb) : ViewModelProvider.Factory{
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {

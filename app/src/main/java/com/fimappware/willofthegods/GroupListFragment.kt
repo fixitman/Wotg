@@ -29,7 +29,6 @@ class GroupListFragment : Fragment() {
         recycler = view.findViewById<RecyclerView>(R.id.grouplist)
         val fab = view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
 
-
         return view
     }
 
@@ -39,7 +38,6 @@ class GroupListFragment : Fragment() {
         adapter = GroupRecyclerAdapter(vm.groupList.value?: emptyList())
         recycler.layoutManager = LinearLayoutManager(context)
         recycler.adapter = adapter
-
 
         vm.groupList.observe(viewLifecycleOwner) {
             Log.d(TAG, "onCreate: List changed")
