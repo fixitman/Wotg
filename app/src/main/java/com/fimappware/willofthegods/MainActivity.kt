@@ -3,15 +3,11 @@ package com.fimappware.willofthegods
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.fimappware.willofthegods.data.AppDb
 
-private const val TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity() , FragmentChangeListener {
-    private val vm : GroupViewModel by viewModels { GroupViewModel.Factory(AppDb.getInstance(this)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
