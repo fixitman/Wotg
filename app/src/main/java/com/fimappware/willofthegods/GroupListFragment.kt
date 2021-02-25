@@ -1,5 +1,6 @@
 package com.fimappware.willofthegods
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fimappware.willofthegods.data.AppDb
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 private const val TAG = "GroupListFragment"
 class GroupListFragment : Fragment() {
@@ -20,27 +20,36 @@ class GroupListFragment : Fragment() {
     private lateinit var adapter: GroupRecyclerAdapter
 
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        val db = AppDb.getInstance(context)
+        val factory = GroupViewModel.Factory(db)
+        Log.d(TAG, "onAttach: initializing vm")
+        vm = activity?. let {
+            ViewModelProvider(it,factory)[GroupViewModel::class.java]
+        } ?: throw (IllegalStateException("Fragment has null activity"))
+
+        adapter = GroupRecyclerAdapter(vm.groupList.value ?: emptyList())
+
+    }
+
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_group_list, container, false)
-        recycler = view.findViewById<RecyclerView>(R.id.grouplist)
-        val fab = view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
-
-        return view
+        return inflater.inflate(R.layout.fragment_group_list, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        vm = ViewModelProvider(this, GroupViewModel.Factory(AppDb.getInstance(requireContext()))).get(GroupViewModel::class.java)
-        adapter = GroupRecyclerAdapter(vm.groupList.value?: emptyList())
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        recycler = view.findViewById<RecyclerView>(R.id.grouplist)
         recycler.layoutManager = LinearLayoutManager(context)
         recycler.adapter = adapter
 
         vm.groupList.observe(viewLifecycleOwner) {
-            Log.d(TAG, "onCreate: List changed")
             adapter.setGroups(it)
         }
     }
