@@ -1,6 +1,8 @@
 package com.fimappware.willofthegods
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +20,20 @@ class GroupListFragment : Fragment() {
     private lateinit var adapter: GroupRecyclerAdapter
 
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        val db = AppDb.getInstance(context)
+        val factory = GroupViewModel.Factory(db)
+        Log.d(TAG, "onAttach: initializing vm")
+        vm = activity?. let {
+            ViewModelProvider(it,factory)[GroupViewModel::class.java]
+        } ?: throw (IllegalStateException("Fragment has null activity"))
+
+        adapter = GroupRecyclerAdapter(vm.groupList.value ?: emptyList())
+
+    }
+
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -29,22 +45,13 @@ class GroupListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val db = AppDb.getInstance(requireContext())
-        val factory = GroupViewModel.Factory(db)
-        vm = ViewModelProvider(requireActivity(),factory)[GroupViewModel::class.java]
-        adapter = GroupRecyclerAdapter(vm.groupList.value ?: emptyList())
-
-        recycler = view.findViewById<RecyclerView>(R.id.grouplist).also{
-            it.layoutManager = LinearLayoutManager(context)
-            it.adapter = adapter
-        }
+        recycler = view.findViewById<RecyclerView>(R.id.grouplist)
+        recycler.layoutManager = LinearLayoutManager(context)
+        recycler.adapter = adapter
 
         vm.groupList.observe(viewLifecycleOwner) {
             adapter.setGroups(it)
         }
     }
-
-
 
 }
