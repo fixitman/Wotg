@@ -37,4 +37,7 @@ class MainActivity : AppCompatActivity() , FragmentChangeListener {
             .addToBackStack(frag.toString())
             .commit()
     }
+
+
+    //added a comment
 }
