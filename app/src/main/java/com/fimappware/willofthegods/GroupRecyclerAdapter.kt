@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fimappware.willofthegods.data.Group
 
 class GroupRecyclerAdapter(private var groups : List<Group>) :  RecyclerView.Adapter<GroupRecyclerAdapter.GroupViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.group_layout,parent,false)
         return GroupViewHolder(view)
