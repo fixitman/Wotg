@@ -6,11 +6,32 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.fimappware.willofthegods.data.AppDb
+import com.fimappware.willofthegods.data.Group
+import kotlinx.coroutines.launch
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 class AddEditGroupFragment : Fragment() {
+    private var groupId = 0L
+    private lateinit var group : Group
+    private lateinit var vm : GroupViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let{ args ->
+            groupId = args.getLong(GroupListFragment.ARG_GROUP_ID, 0L)
+        }
+        if(groupId < 1L) throw(IllegalArgumentException("No Group Passed"))
+
+        val db = AppDb.getInstance(requireContext())
+        vm = ViewModelProvider(requireActivity(),GroupViewModel.Factory(db))[GroupViewModel::class.java]
+
+
+    }
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -22,9 +43,9 @@ class AddEditGroupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        view.findViewById<Button>(R.id.button_second).setOnClickListener {
-           // findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+        lifecycleScope.launch {
+            group = vm.getGroupById(groupId)
+            view.findViewById<Button>(R.id.button_second).text = group.Name
         }
     }
 

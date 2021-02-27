@@ -19,6 +19,10 @@ class GroupViewModel(private val appDb: AppDb) : ViewModel() {
         }
     }
 
+    suspend fun getGroupById(groupId : Long) : Group{
+        return appDb.groupDao().getById(groupId)
+    }
+
     class Factory(private val appDb: AppDb) : ViewModelProvider.Factory{
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             Log.d(TAG, "creating viewModel")

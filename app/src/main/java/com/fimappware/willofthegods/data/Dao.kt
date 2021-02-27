@@ -12,6 +12,9 @@ interface GroupDao{
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(group:Group) : Long
+
+    @Update
+    suspend fun update(group : Group) : Int
 }
 
 
@@ -26,6 +29,9 @@ interface GroupItemDao{
 
     @Update
     suspend fun update(groupItem : GroupItem) : Int
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(groupItem: GroupItem)
 }
 
 
