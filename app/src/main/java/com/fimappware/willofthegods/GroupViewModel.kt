@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 
 private const val TAG = "GroupViewModel"
 
-class GroupViewModel(val appDb: AppDb) : ViewModel() {
+class GroupViewModel(private val appDb: AppDb) : ViewModel() {
 
     private var groups = MutableLiveData<List<Group>>()
     val groupList : LiveData<List<Group>> = groups

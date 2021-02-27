@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fimappware.willofthegods.data.AppDb
 
 //private const val TAG = "GroupListFragment"
-class GroupListFragment : Fragment() {
+class GroupListFragment : Fragment(), GroupRecyclerAdapter.OnGroupClickedListener {
 
     private lateinit var vm : GroupViewModel
     private lateinit var recycler : RecyclerView
@@ -29,7 +29,7 @@ class GroupListFragment : Fragment() {
             ViewModelProvider(it,factory)[GroupViewModel::class.java]
         } ?: throw (IllegalStateException("Fragment has null activity"))
 
-        adapter = GroupRecyclerAdapter(vm.groupList.value ?: emptyList())
+        adapter = GroupRecyclerAdapter(vm.groupList.value ?: emptyList(), this)
 
     }
 
@@ -53,4 +53,19 @@ class GroupListFragment : Fragment() {
         }
     }
 
+    override fun onGroupClicked(groupId: Long){
+        val frag = AddEditGroupFragment().apply {
+            arguments = Bundle().apply{
+                putLong(ARG_GROUP_ID, groupId)
+            }
+        }
+        if(requireActivity() is FragmentChangeListener){
+            (requireActivity() as FragmentChangeListener).changeFragment(frag )
+        }
+    }
+
+
+    companion object{
+        const val ARG_GROUP_ID = "GroupId"
+    }
 }
