@@ -13,13 +13,14 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fimappware.willofthegods.data.AppDb
+import com.fimappware.willofthegods.data.Group
 
 //private const val TAG = "GroupListFragment"
 class GroupListFragment : Fragment() {
 
     private lateinit var vm : GroupViewModel
     private lateinit var recycler : RecyclerView
-    private lateinit var adapter: GroupRecyclerAdapter
+    private lateinit var adapter: GroupListAdapter
     private lateinit var navController: NavController
 
 
@@ -33,8 +34,8 @@ class GroupListFragment : Fragment() {
             ViewModelProvider(it,factory)[GroupViewModel::class.java]
         } ?: throw (IllegalStateException("Fragment has null activity"))
 
-        adapter = GroupRecyclerAdapter(vm.groupList.value ?: emptyList(), onGroupClick)
-
+        adapter = GroupListAdapter(groupClickHandler)
+        adapter.submitList(vm.groupList.value?: emptyList<Group>())
     }
 
     override fun onCreateView(
@@ -55,11 +56,11 @@ class GroupListFragment : Fragment() {
         recycler.adapter = adapter
 
         vm.groupList.observe(viewLifecycleOwner) {
-            adapter.setGroups(it)
+            adapter.submitList(it.toMutableList())  //toMutableList ensures a new instance of the list is sent
         }
     }
 
-    private val onGroupClick = { id : Long->
+    private val groupClickHandler = { id : Long->
         val arguments = bundleOf(ARG_GROUP_ID to id)
         navController.navigate(R.id.action_groupListFragment_to_addEditGroupFragment,arguments)
     }

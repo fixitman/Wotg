@@ -5,14 +5,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.fimappware.willofthegods.data.Group
 
 
-class GroupRecyclerAdapter(
-private var groups : List<Group>,
+class GroupListAdapter(
 private val groupClickHandler : (id : Long) -> Unit
-) : RecyclerView.Adapter<GroupRecyclerAdapter.GroupViewHolder>() {
+) : ListAdapter<Group, GroupListAdapter.GroupViewHolder>(GroupDiff()){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.group_layout,parent,false)
@@ -20,16 +21,7 @@ private val groupClickHandler : (id : Long) -> Unit
     }
 
     override fun onBindViewHolder(holder: GroupViewHolder, position: Int) {
-        holder.bind(groups[position],groupClickHandler)
-    }
-
-    override fun getItemCount(): Int {
-        return groups.size
-    }
-
-    fun setGroups(groups : List<Group>){
-        this.groups = groups
-        notifyDataSetChanged()
+        holder.bind(getItem(position),groupClickHandler)
     }
 
     class GroupViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
@@ -42,6 +34,19 @@ private val groupClickHandler : (id : Long) -> Unit
                 clickHandler.invoke(group.id)
             }
         }
+    }
+}
+
+class GroupDiff : DiffUtil.ItemCallback<Group>(){
+
+    override fun areItemsTheSame(oldItem: Group, newItem: Group): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: Group, newItem: Group): Boolean {
+        return oldItem.Name == newItem.Name &&
+                oldItem.Type == newItem.Type
+
     }
 
 }
