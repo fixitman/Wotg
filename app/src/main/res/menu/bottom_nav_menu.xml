@@ -3,16 +3,17 @@
 
     <item
         android:id="@+id/numberFragment"
-        android:title="Numbers" />
+        android:title="@string/numbers"
+        android:icon="@drawable/ic_action_numbers"/>
 
     <item
         android:id="@+id/groupListFragment"
-        android:title="Lists"
+        android:title="@string/lists"
         android:icon="@drawable/ic_list_24" />
 
     <item
         android:id="@+id/addEditGroupFragment"
-        android:title="Dice"
+        android:title="@string/dice"
         android:icon="@drawable/ic_dice_six_faces_five"/>
 
 </menu>
