@@ -1,6 +1,7 @@
 package com.fimappware.willofthegods
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,8 @@ import kotlinx.coroutines.launch
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
+
+private const val TAG = "MFCAddEditGroupFragment"
 class AddEditGroupFragment : Fragment() {
     private var groupId = 0L
     private lateinit var group : Group
@@ -24,11 +27,16 @@ class AddEditGroupFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let{ args ->
             groupId = args.getLong(GroupListFragment.ARG_GROUP_ID, 0L)
-        }
-        if(groupId < 1L) throw(IllegalArgumentException("No Group Passed"))
+        } ?: Log.d(TAG, "OnCreate: no arguments")
+
+
+//        if(groupId < 1L) throw(IllegalArgumentException("No Group Passed"))
+        Log.d(TAG, "onCreate: groupId = $groupId")
+        if(groupId < 1L) groupId = 6L
 
         val db = AppDb.getInstance(requireContext())
         vm = ViewModelProvider(requireActivity(),GroupViewModel.Factory(db))[GroupViewModel::class.java]
+
 
 
     }

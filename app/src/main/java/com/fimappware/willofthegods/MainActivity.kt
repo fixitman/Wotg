@@ -1,27 +1,41 @@
 package com.fimappware.willofthegods
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.fimappware.willofthegods.data.AppDb
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 private const val TAG = "MainActivity"
-class MainActivity : AppCompatActivity(), FragmentChangeListener {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var vm: GroupViewModel
+    private lateinit var navController: NavController
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
 
+        //set up navigation on appBar and bottomNav
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
+        appBarConfiguration = AppBarConfiguration(navController.graph)
+            //todo change to set of 3 start fragments corresponding to bottom nav destinations)
+
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        findViewById<BottomNavigationView>(R.id.bottomNavigationView).setupWithNavController(navController)
+
         val db = AppDb.getInstance(this)
         val factory = GroupViewModel.Factory(db)
-        Log.d(TAG, "onCreate: initializing vm")
         vm = ViewModelProvider(this, factory ).get(GroupViewModel::class.java)
     }
 
@@ -41,13 +55,9 @@ class MainActivity : AppCompatActivity(), FragmentChangeListener {
         }
     }
 
-    override fun changeFragment(frag: Fragment) {
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment, frag, frag.toString())
-                .addToBackStack(frag.toString())
-                .commit()
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
-
-    //added a comment
 }

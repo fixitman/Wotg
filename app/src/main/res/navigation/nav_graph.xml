@@ -7,8 +7,8 @@
     <fragment
         android:id="@+id/groupListFragment"
         android:name="com.fimappware.willofthegods.GroupListFragment"
-        android:label="fragment_first"
-        tools:layout="@layout/fragment_group_list" >
+        android:label="Group List"
+        tools:layout="@layout/fragment_group_list">
         <action
             android:id="@+id/action_groupListFragment_to_addEditGroupFragment"
             app:destination="@id/addEditGroupFragment"
@@ -18,6 +18,6 @@
     <fragment
         android:id="@+id/addEditGroupFragment"
         android:name="com.fimappware.willofthegods.AddEditGroupFragment"
-        android:label="fragment_second"
+        android:label="Add/Edit Group"
         tools:layout="@layout/fragment_add_edit_group" />
 </navigation>
