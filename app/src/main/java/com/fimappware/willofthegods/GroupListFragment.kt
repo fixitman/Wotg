@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fimappware.willofthegods.data.AppDb
 import com.fimappware.willofthegods.data.Group
 
+
+
 //private const val TAG = "GroupListFragment"
 class GroupListFragment : Fragment() {
 
@@ -61,11 +63,8 @@ class GroupListFragment : Fragment() {
     }
 
     private val groupClickHandler = { id : Long->
-        val arguments = bundleOf(ARG_GROUP_ID to id)
+        val arguments = bundleOf(GroupItemsListFragment.ARG_GROUP_ID to id)
         navController.navigate(R.id.action_groupListFragment_to_addEditGroupFragment,arguments)
     }
 
-    companion object{
-        const val ARG_GROUP_ID = "GroupId"
-    }
 }
