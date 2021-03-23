@@ -31,10 +31,10 @@ interface GroupItemDao{
     suspend fun getAll() : List<GroupItem>
 
     @Query("SELECT * FROM GroupItems where enabled and groupId = :groupId")
-    suspend fun getEnabledItemsInGroup(groupId : Long)
+    suspend fun getEnabledItemsInGroup(groupId : Long) : List<GroupItem>
 
     @Query("SELECT * FROM GroupItems WHERE groupId = :groupId")
-    suspend fun getAllItemsInGroup(groupId : Long)
+    suspend fun getAllItemsInGroup(groupId : Long) : List<GroupItem>
 
     @Query("Select * from GroupItems where _id = :id")
     suspend fun getById(id : Long): GroupItem
