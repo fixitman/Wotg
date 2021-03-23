@@ -44,6 +44,9 @@ interface GroupItemDao{
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(groupItem: GroupItem)
+
+    @Query("UPDATE GroupItems SET enabled = :enabled WHERE _id = :itemId")
+    suspend fun setItemEnabled(itemId: Long, enabled: Boolean)
 }
 
 
