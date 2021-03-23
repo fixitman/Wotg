@@ -15,6 +15,12 @@ interface GroupDao{
 
     @Update
     suspend fun update(group : Group) : Int
+
+    @Query("DELETE FROM GROUPS WHERE _id = :id")
+    suspend fun deleteById(id: Long)
+
+    @Delete
+    suspend fun delete(group: Group)
 }
 
 
