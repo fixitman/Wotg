@@ -1,4 +1,4 @@
-package com.fimappware.willofthegods
+package com.fimappware.willofthegods.ui.group
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +8,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.fimappware.willofthegods.R
 import com.fimappware.willofthegods.data.Group
 
 

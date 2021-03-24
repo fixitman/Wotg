@@ -1,4 +1,4 @@
-package com.fimappware.willofthegods
+package com.fimappware.willofthegods.ui
 
 import android.os.Bundle
 import android.view.Menu
@@ -10,7 +10,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.fimappware.willofthegods.R
 import com.fimappware.willofthegods.data.AppDb
+import com.fimappware.willofthegods.ui.group.GroupViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 private const val TAG = "MainActivity"

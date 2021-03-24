@@ -1,4 +1,4 @@
-package com.fimappware.willofthegods
+package com.fimappware.willofthegods.ui.groupitem
 
 import androidx.lifecycle.*
 import com.fimappware.willofthegods.data.AppDb

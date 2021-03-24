@@ -1,4 +1,4 @@
-package com.fimappware.willofthegods
+package com.fimappware.willofthegods.ui.groupitem
 
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.fimappware.willofthegods.R
 import com.fimappware.willofthegods.data.AppDb
 
 private const val TAG = "MFC-GroupItemsListFrag"
@@ -32,7 +33,7 @@ class GroupItemsListFragment : Fragment() {
             throw IllegalArgumentException("No group ID supplied")
         }
         val appDb = AppDb.getInstance(requireContext())
-        val factory = ItemListViewModel.Factory(groupId,appDb)
+        val factory = ItemListViewModel.Factory(groupId, appDb)
         vm = ViewModelProvider(this,factory).get(ItemListViewModel::class.java)
         adapter = ItemListAdapter(vm)
         adapter.submitList(vm.itemList.value)

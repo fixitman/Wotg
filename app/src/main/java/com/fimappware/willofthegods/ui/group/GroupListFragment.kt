@@ -1,4 +1,4 @@
-package com.fimappware.willofthegods
+package com.fimappware.willofthegods.ui.group
 
 import android.content.Context
 import android.os.Bundle
@@ -12,6 +12,8 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.fimappware.willofthegods.ui.groupitem.GroupItemsListFragment
+import com.fimappware.willofthegods.R
 import com.fimappware.willofthegods.data.AppDb
 import com.fimappware.willofthegods.data.Group
 

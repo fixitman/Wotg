@@ -6,7 +6,7 @@
     app:startDestination="@id/groupListFragment">
     <fragment
         android:id="@+id/groupListFragment"
-        android:name="com.fimappware.willofthegods.GroupListFragment"
+        android:name="com.fimappware.willofthegods.ui.group.GroupListFragment"
         android:label="Group List"
         tools:layout="@layout/fragment_group_list">
         <action
@@ -25,7 +25,7 @@
         tools:layout="@layout/fragment_add_edit_group" />
     <fragment
         android:id="@+id/groupItemsListFragment"
-        android:name="com.fimappware.willofthegods.GroupItemsListFragment"
+        android:name="com.fimappware.willofthegods.ui.groupitem.GroupItemsListFragment"
         android:label="fragment_group_items_list"
         tools:layout="@layout/fragment_group_items_list" />
 </navigation>

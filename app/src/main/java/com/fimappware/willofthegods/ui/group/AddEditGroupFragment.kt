@@ -1,4 +1,4 @@
-package com.fimappware.willofthegods
+package com.fimappware.willofthegods.ui.group
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.fimappware.willofthegods.R
 import com.fimappware.willofthegods.data.AppDb
 
 /**
@@ -20,7 +21,7 @@ class AddEditGroupFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val db = AppDb.getInstance(requireContext())
-        vm = ViewModelProvider(requireActivity(),GroupViewModel.Factory(db))[GroupViewModel::class.java]
+        vm = ViewModelProvider(requireActivity(), GroupViewModel.Factory(db))[GroupViewModel::class.java]
 
     }
 
