@@ -1,6 +1,5 @@
 package com.fimappware.willofthegods
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -21,15 +20,7 @@ class GroupItemsListFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter : ItemListAdapter
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
 
-        val appDb = AppDb.getInstance(context)
-        val factory = ItemListViewModel.Factory(appDb)
-        vm = ViewModelProvider(this,factory).get(ItemListViewModel::class.java)
-        adapter = ItemListAdapter(vm)
-        adapter.submitList(vm.itemList.value)
-    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +31,11 @@ class GroupItemsListFragment : Fragment() {
         if(groupId == 0L){
             throw IllegalArgumentException("No group ID supplied")
         }
+        val appDb = AppDb.getInstance(requireContext())
+        val factory = ItemListViewModel.Factory(groupId,appDb)
+        vm = ViewModelProvider(this,factory).get(ItemListViewModel::class.java)
+        adapter = ItemListAdapter(vm)
+        adapter.submitList(vm.itemList.value)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

@@ -11,6 +11,7 @@
     <string name="numbers">Numbers</string>
     <string name="lists">Lists</string>
     <string name="dice">Dice</string>
+    <string name="go">GO!</string>
 
 
 </resources>

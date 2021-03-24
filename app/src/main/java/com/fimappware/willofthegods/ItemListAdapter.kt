@@ -1,5 +1,6 @@
 package com.fimappware.willofthegods
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -12,7 +13,8 @@ import com.google.android.material.switchmaterial.SwitchMaterial
 class ItemListAdapter(private val vm : ItemListViewModel) : ListAdapter<GroupItem,ItemListAdapter.ViewHolder>(ListItemDiff()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        TODO("Not yet implemented")
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_layout,parent,false)
+        return ViewHolder(itemView)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

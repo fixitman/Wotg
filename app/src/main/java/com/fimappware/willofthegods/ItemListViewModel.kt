@@ -18,7 +18,8 @@ class ItemListViewModel(private var groupId : Long, private val db: AppDb) : Vie
 
     fun updateItemList(){
         viewModelScope.launch {
-            _itemList.value = db.groupItemDao().getAllItemsInGroup(groupId)
+            val list = db.groupItemDao().getAllItemsInGroup(groupId)
+            _itemList.value = list
         }
     }
 
@@ -26,13 +27,12 @@ class ItemListViewModel(private var groupId : Long, private val db: AppDb) : Vie
         viewModelScope.launch {
             db.groupItemDao().setItemEnabled(itemId,enabled)
         }
-
     }
 
 
-    class Factory(private val db : AppDb) : ViewModelProvider.Factory{
+    class Factory(private var groupId : Long, private val db : AppDb) : ViewModelProvider.Factory{
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return modelClass.getConstructor(AppDb::class.java).newInstance(db)
+            return modelClass.getConstructor(Long::class.java, AppDb::class.java).newInstance(groupId,db)
         }
     }
 }
