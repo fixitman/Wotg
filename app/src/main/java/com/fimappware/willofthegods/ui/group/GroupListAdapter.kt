@@ -13,7 +13,7 @@ import com.fimappware.willofthegods.data.Group
 
 
 class GroupListAdapter(
-private val groupClickHandler : (id : Long) -> Unit
+private val callbackHandler: CallbackHandler
 ) : ListAdapter<Group, GroupListAdapter.GroupViewHolder>(GroupDiff()){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupViewHolder {
@@ -22,17 +22,22 @@ private val groupClickHandler : (id : Long) -> Unit
     }
 
     override fun onBindViewHolder(holder: GroupViewHolder, position: Int) {
-        holder.bind(getItem(position),groupClickHandler)
+        holder.bind(getItem(position),callbackHandler)
+    }
+
+    interface CallbackHandler{
+        fun groupClicked(id: Long)
+
     }
 
     class GroupViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         private val name = itemView.findViewById<TextView>(R.id.tv_group_name)
         private val card = itemView.findViewById<CardView>(R.id.card)
 
-        fun bind(group : Group, clickHandler: (id: Long) -> Unit){
+        fun bind(group : Group, callbackHandler: CallbackHandler){
             name.text = group.Name
             card.setOnClickListener {
-                clickHandler.invoke(group.id)
+                callbackHandler.groupClicked(group.id)
             }
         }
     }

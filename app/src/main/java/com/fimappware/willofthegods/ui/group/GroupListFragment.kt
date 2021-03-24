@@ -12,15 +12,15 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.fimappware.willofthegods.ui.groupitem.GroupItemsListFragment
 import com.fimappware.willofthegods.R
 import com.fimappware.willofthegods.data.AppDb
 import com.fimappware.willofthegods.data.Group
+import com.fimappware.willofthegods.ui.groupitem.GroupItemsListFragment
 
 
 
 //private const val TAG = "GroupListFragment"
-class GroupListFragment : Fragment() {
+class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler {
 
     private lateinit var vm : GroupViewModel
     private lateinit var recycler : RecyclerView
@@ -38,7 +38,7 @@ class GroupListFragment : Fragment() {
             ViewModelProvider(it,factory)[GroupViewModel::class.java]
         } ?: throw (IllegalStateException("Fragment has null activity"))
 
-        adapter = GroupListAdapter(groupClickHandler)
+        adapter = GroupListAdapter(this)
         adapter.submitList(vm.groupList.value?: emptyList<Group>())
     }
 
@@ -64,9 +64,10 @@ class GroupListFragment : Fragment() {
         }
     }
 
-    private val groupClickHandler = { id : Long->
+
+
+    override fun groupClicked(id: Long) {
         val arguments = bundleOf(GroupItemsListFragment.ARG_GROUP_ID to id)
         navController.navigate(R.id.action_groupListFragment_to_groupItemsListFragment,arguments)
     }
-
 }
