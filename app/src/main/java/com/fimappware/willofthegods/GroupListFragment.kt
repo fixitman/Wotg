@@ -64,7 +64,7 @@ class GroupListFragment : Fragment() {
 
     private val groupClickHandler = { id : Long->
         val arguments = bundleOf(GroupItemsListFragment.ARG_GROUP_ID to id)
-        navController.navigate(R.id.action_groupListFragment_to_addEditGroupFragment,arguments)
+        navController.navigate(R.id.action_groupListFragment_to_groupItemsListFragment,arguments)
     }
 
 }
