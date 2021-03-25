@@ -12,9 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fimappware.willofthegods.R
 import com.fimappware.willofthegods.data.AppDb
+import com.fimappware.willofthegods.data.GroupItem
 
 private const val TAG = "MFC-GroupItemsListFrag"
-class GroupItemsListFragment : Fragment() {
+class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler{
 
     private var groupId: Long = 0L
     private lateinit var vm : ItemListViewModel
@@ -35,7 +36,7 @@ class GroupItemsListFragment : Fragment() {
         val appDb = AppDb.getInstance(requireContext())
         val factory = ItemListViewModel.Factory(groupId, appDb)
         vm = ViewModelProvider(this,factory).get(ItemListViewModel::class.java)
-        adapter = ItemListAdapter(vm)
+        adapter = ItemListAdapter(this)
         adapter.submitList(vm.itemList.value)
     }
 
@@ -57,14 +58,18 @@ class GroupItemsListFragment : Fragment() {
         }
 
         view.findViewById<Button>(R.id.go_button).setOnClickListener {
-            onGoClicked(it)
+            onGoClicked()
         }
 
     }
 
-    private fun onGoClicked(view : View){
+    private fun onGoClicked() {
         //todo implement go button click
         Log.d(TAG, "onGoClicked: clicked")
+    }
+
+    override fun onSwitchCheckedChange(groupItem: GroupItem, isChecked: Boolean) {
+        vm.setItemEnabled(groupItem.id, isChecked)
     }
 
     companion object {

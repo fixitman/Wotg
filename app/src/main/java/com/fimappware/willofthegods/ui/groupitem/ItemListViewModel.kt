@@ -11,12 +11,12 @@ class ItemListViewModel(private var groupId : Long, private val db: AppDb) : Vie
         updateItemList()
     }
 
-
     private var _itemList = MutableLiveData<List<GroupItem>>()
+
     val itemList : LiveData<List<GroupItem>>
         get() = _itemList
 
-    fun updateItemList(){
+    private fun updateItemList(){
         viewModelScope.launch {
             val list = db.groupItemDao().getAllItemsInGroup(groupId)
             _itemList.value = list
@@ -26,9 +26,9 @@ class ItemListViewModel(private var groupId : Long, private val db: AppDb) : Vie
     fun setItemEnabled(itemId: Long, enabled: Boolean) {
         viewModelScope.launch {
             db.groupItemDao().setItemEnabled(itemId,enabled)
+            updateItemList()
         }
     }
-
 
     class Factory(private var groupId : Long, private val db : AppDb) : ViewModelProvider.Factory{
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
