@@ -7,21 +7,19 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "Groups")
 data class Group(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name="_id")
-    val id : Long,
-    val Name : String,
-    val Type : Int = 0
+    var id : Long,
+    var Name : String,
+    var Type : Int = 0
 )
 
 @Entity(tableName = "GroupItems")
 data class GroupItem(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "_id")
+        @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "_id")
     val id : Long,
-    val groupId : Long,
-    val itemText : String?,
-    val enabled : Boolean = true,
-    val image : ByteArray?
-
-
+        var groupId : Long,
+        var itemText : String?,
+        var enabled : Boolean = true,
+        var image : ByteArray?
 )
 
 object Triggers{
