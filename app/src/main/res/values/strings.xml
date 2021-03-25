@@ -12,6 +12,8 @@
     <string name="lists">Lists</string>
     <string name="dice">Dice</string>
     <string name="go">GO!</string>
+    <string name="ok">ok</string>
+    <string name="cancel">cancel</string>
 
 
 </resources>
