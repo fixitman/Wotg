@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/addEditGroupFragment"
-        android:name="com.fimappware.willofthegods.AddEditGroupFragment"
+        android:name="com.fimappware.willofthegods.ui.group.AddEditGroupFragment"
         android:label="Add/Edit Group"
         tools:layout="@layout/fragment_add_edit_group" />
     <fragment
