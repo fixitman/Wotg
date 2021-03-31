@@ -12,8 +12,9 @@
     <string name="lists">Lists</string>
     <string name="dice">Dice</string>
     <string name="go">GO!</string>
-    <string name="ok">ok</string>
-    <string name="cancel">cancel</string>
+    <string name="ok">@android:string/ok</string>
+    <string name="cancel">@android:string/cancel</string>
+    <string name="group_name">Group Name</string>
 
 
 </resources>
