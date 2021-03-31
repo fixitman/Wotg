@@ -6,8 +6,9 @@
         <item>Third</item>
     </array>
     <array name="thanks">
-        <item>CodingWithMitch.com</item>
         <item>Tim Buchalka - LearnProgramming.academy</item>
+        <item>CodingWithMitch.com</item>
+        <item>Color palettes by Coolers.co </item>
     </array>
 
 </resources>
