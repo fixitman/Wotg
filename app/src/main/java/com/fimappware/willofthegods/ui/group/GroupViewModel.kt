@@ -14,13 +14,24 @@ class GroupViewModel(private val appDb: AppDb) : ViewModel() {
     val groupList : LiveData<List<Group>> = groups
 
     init {
-        viewModelScope.launch{
-            groups.value = appDb.groupDao().getAll()
-        }
+        refreshGroups()
     }
 
     suspend fun getGroupById(groupId : Long) : Group{
         return appDb.groupDao().getById(groupId)
+    }
+
+    fun addGroup(group: Group){
+        viewModelScope.launch {
+            val id = appDb.groupDao().insert(group)
+            if (id > 0) refreshGroups()
+        }
+    }
+
+    private fun refreshGroups(){
+        viewModelScope.launch{
+            groups.value = appDb.groupDao().getAll()
+        }
     }
 
     class Factory(private val appDb: AppDb) : ViewModelProvider.Factory{
