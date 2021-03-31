@@ -49,7 +49,7 @@ class ListItemDiff() : DiffUtil.ItemCallback<GroupItem>(){
     override fun areContentsTheSame(oldItem: GroupItem, newItem: GroupItem): Boolean{
         return oldItem.enabled == newItem.enabled
                 && oldItem.groupId == newItem.groupId
-                && oldItem.image.contentEquals( newItem.image)
+                && oldItem.imageURI == newItem.imageURI
                 && oldItem.itemText == newItem.itemText
     }
 }
