@@ -19,7 +19,7 @@ data class GroupItem(
         var groupId : Long,
         var itemText : String?,
         var enabled : Boolean = true,
-        var image : ByteArray?
+        var imageURI : String?
 )
 
 object Triggers{
