@@ -9,11 +9,12 @@
     <color name="white">#FFFFFFFF</color>
     <color name="dark_white">#ffeeeeee</color>
 
-    <!--   Greens #35570b #64923b #83bb7e #d8ead7 
+    <!--   Greens #35570b #64923b #83bb7e #bfdcbc #d8ead7
            Blues  #606580 #99bdff  -->
     
     <color name="green_dk">#35570b</color>
     <color name="green_med">#64923b</color>
+    <color name="green_med_lt">#bfdcbc</color>
     <color name="green_lt">#83bb7e</color>
     <color name="green_pale">#d8ead7</color>
     
