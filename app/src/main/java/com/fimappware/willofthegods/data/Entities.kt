@@ -38,4 +38,6 @@ object Triggers{
     
 
     val all = arrayOf(DELETE_GROUP)
+    //comment
+
 }
