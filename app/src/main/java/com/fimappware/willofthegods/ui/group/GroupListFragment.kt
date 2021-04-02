@@ -12,9 +12,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.fimappware.navigation.SwipeRightCallback
 import com.fimappware.willofthegods.R
+import com.fimappware.willofthegods.SwipeLeftCallback
 import com.fimappware.willofthegods.data.AppDb
 import com.fimappware.willofthegods.data.Group
 import com.fimappware.willofthegods.databinding.FragmentGroupListBinding
@@ -64,6 +67,23 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler, InputTex
         recycler = bind.grouplist
         recycler.layoutManager = LinearLayoutManager(context)
         recycler.adapter = adapter
+
+        val editSwipeCallback = object : SwipeRightCallback(requireContext()){
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                TODO("Not yet implemented")
+            }
+        }
+        val editItemHelper = ItemTouchHelper(editSwipeCallback)
+        editItemHelper.attachToRecyclerView(recycler)
+
+        val deleteSwipeCallback = object : SwipeLeftCallback(requireContext()){
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                TODO("Not yet implemented")
+            }
+        }
+        val deleteItemHelper = ItemTouchHelper(deleteSwipeCallback)
+        deleteItemHelper.attachToRecyclerView(recycler)
+
 
         vm.groupList.observe(viewLifecycleOwner) {
             adapter.submitList(it.toMutableList())  //toMutableList ensures a new instance of the list is sent
