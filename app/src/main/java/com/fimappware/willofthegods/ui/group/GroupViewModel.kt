@@ -28,6 +28,13 @@ class GroupViewModel(private val appDb: AppDb) : ViewModel() {
         }
     }
 
+    fun deleteGroup(groupId : Long){
+        viewModelScope.launch {
+            appDb.groupDao().deleteById(groupId)
+            refreshGroups()
+        }
+    }
+
     private fun refreshGroups(){
         viewModelScope.launch{
             groups.value = appDb.groupDao().getAll()

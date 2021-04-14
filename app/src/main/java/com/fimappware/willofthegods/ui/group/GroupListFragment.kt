@@ -78,7 +78,8 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler, InputTex
 
         val deleteSwipeCallback = object : SwipeLeftCallback(requireContext()){
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                TODO("Not yet implemented")
+                val holder = viewHolder as GroupListAdapter.GroupViewHolder
+                vm.deleteGroup(holder.groupId)
             }
         }
         val deleteItemHelper = ItemTouchHelper(deleteSwipeCallback)
