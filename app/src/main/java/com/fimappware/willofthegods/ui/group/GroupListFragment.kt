@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -106,21 +105,15 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler, InputTex
         }
     }
 
-
-    override fun groupClicked(id: Long) {
-        val arguments = bundleOf(GroupItemsListFragment.ARG_GROUP_ID to id)
-        navController.navigate(R.id.action_groupListFragment_to_groupItemsListFragment,arguments)
-    }
-
     private fun addGroup(){
-        Toast.makeText(context, "Going to Add/Edit screen", Toast.LENGTH_SHORT).show()
-        getGroupName()
+       getGroupName()
     }
 
     private fun getGroupName(){
         InputTextDialog().show(childFragmentManager,"textinputdialog")
     }
 
+//required by InputTextDialog.EventListener
     override fun onDlgPositiveEvent(dialog: DialogFragment) {
         val text = (dialog as InputTextDialog).getInputText()
         vm.addGroup(Group(0L,text))
@@ -128,5 +121,11 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler, InputTex
 
     override fun onDlgNegativeEvent(dialog: DialogFragment) {
         dialog.dismiss()
+    }
+
+    // required by  GroupListAdapter.CallbackHandler
+    override fun groupClicked(id: Long) {
+        val arguments = bundleOf(GroupItemsListFragment.ARG_GROUP_ID to id)
+        navController.navigate(R.id.action_groupListFragment_to_groupItemsListFragment,arguments)
     }
 }
