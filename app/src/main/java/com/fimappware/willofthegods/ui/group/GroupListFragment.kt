@@ -159,9 +159,6 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler {
         }
     }
 
-    //required by InputTextDialog.EventListener
-
-
     // required by  GroupListAdapter.CallbackHandler
     override fun groupClicked(id: Long) {
         val arguments = bundleOf(GroupItemsListFragment.ARG_GROUP_ID to id)
