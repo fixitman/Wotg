@@ -26,7 +26,7 @@ import com.google.android.material.snackbar.Snackbar
 
 
 //private const val TAG = "GroupListFragment"
-class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler, InputTextDialog.EventListener {
+class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler {
 
     private lateinit var vm : GroupViewModel
     private lateinit var recycler : RecyclerView
@@ -71,7 +71,10 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler, InputTex
 
         val editSwipeCallback = object : SwipeRightCallback(requireContext()){
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                TODO("Not yet implemented")
+                val holder = viewHolder as GroupListAdapter.GroupViewHolder
+                holder.group?.let{
+                    editGroup(it)
+                }
             }
         }
         val editItemHelper = ItemTouchHelper(editSwipeCallback)
@@ -110,11 +113,29 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler, InputTex
     }
 
     private fun addGroup(){
-       getGroupName()
+        InputTextDialog("","New Group Name", object: InputTextDialog.EventListener{
+            override fun onDlgPositiveEvent(dialog: DialogFragment) {
+                val text = (dialog as InputTextDialog).getInputText()
+                vm.addGroup(Group(0L,text))
+            }
+
+            override fun onDlgNegativeEvent(dialog: DialogFragment) {
+                dialog.dismiss()
+            }
+        }).show(childFragmentManager,"addgroupdialog")
     }
 
-    private fun getGroupName(){
-        InputTextDialog().show(childFragmentManager,"textinputdialog")
+    private fun editGroup( group: Group){
+        InputTextDialog(group.Name,"Change Group Name", object: InputTextDialog.EventListener{
+            override fun onDlgPositiveEvent(dialog: DialogFragment) {
+                val text = (dialog as InputTextDialog).getInputText()
+                vm.updateGroup(Group(group.id,text))
+            }
+
+            override fun onDlgNegativeEvent(dialog: DialogFragment) {
+                dialog.dismiss()
+            }
+        }).show(childFragmentManager,"editgroupdialog")
     }
 
     private fun deleteGroup(group : Group){
@@ -139,14 +160,7 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler, InputTex
     }
 
     //required by InputTextDialog.EventListener
-    override fun onDlgPositiveEvent(dialog: DialogFragment) {
-        val text = (dialog as InputTextDialog).getInputText()
-        vm.addGroup(Group(0L,text))
-    }
 
-    override fun onDlgNegativeEvent(dialog: DialogFragment) {
-        dialog.dismiss()
-    }
 
     // required by  GroupListAdapter.CallbackHandler
     override fun groupClicked(id: Long) {

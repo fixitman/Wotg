@@ -35,11 +35,19 @@ class GroupViewModel(private val appDb: AppDb) : ViewModel() {
         }
     }
 
+    fun updateGroup(group: Group){
+        viewModelScope.launch{
+            appDb.groupDao().update(group)
+            refreshGroups()
+        }
+    }
+
     private fun refreshGroups(){
         viewModelScope.launch{
             groups.value = appDb.groupDao().getAll()
         }
     }
+
 
     class Factory(private val appDb: AppDb) : ViewModelProvider.Factory{
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
