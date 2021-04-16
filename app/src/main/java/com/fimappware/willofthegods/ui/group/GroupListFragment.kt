@@ -22,6 +22,7 @@ import com.fimappware.willofthegods.data.Group
 import com.fimappware.willofthegods.databinding.FragmentGroupListBinding
 import com.fimappware.willofthegods.ui.groupitem.GroupItemsListFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 
 
 //private const val TAG = "GroupListFragment"
@@ -32,6 +33,7 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler, InputTex
     private lateinit var adapter: GroupListAdapter
     private lateinit var navController: NavController
     private lateinit var bind : FragmentGroupListBinding
+    private var deletedGroup : Group? = null
 
 
     override fun onAttach(context: Context) {
@@ -78,7 +80,9 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler, InputTex
         val deleteSwipeCallback = object : SwipeLeftCallback(requireContext()){
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val holder = viewHolder as GroupListAdapter.GroupViewHolder
-                vm.deleteGroup(holder.groupId)
+                holder.group?.let{
+                    deleteGroup(it)
+                }
             }
         }
         val deleteItemHelper = ItemTouchHelper(deleteSwipeCallback)
@@ -113,7 +117,28 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler, InputTex
         InputTextDialog().show(childFragmentManager,"textinputdialog")
     }
 
-//required by InputTextDialog.EventListener
+    private fun deleteGroup(group : Group){
+        deletedGroup = group
+        vm.deleteGroup(group.id)
+        Snackbar.make(requireView().findViewById(R.id.groupListConstraintLayout),"Group ${group.Name} deleted",Snackbar.LENGTH_LONG)
+                .setAction("undo"){
+                    undoDelete()
+                }.addCallback(object : Snackbar.Callback() {
+                    override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                        super.onDismissed(transientBottomBar, event)
+                        deletedGroup = null
+                    }
+                }).show()
+    }
+
+    private fun undoDelete(){
+        deletedGroup?.let {
+            vm.addGroup(it)
+            deletedGroup = null
+        }
+    }
+
+    //required by InputTextDialog.EventListener
     override fun onDlgPositiveEvent(dialog: DialogFragment) {
         val text = (dialog as InputTextDialog).getInputText()
         vm.addGroup(Group(0L,text))

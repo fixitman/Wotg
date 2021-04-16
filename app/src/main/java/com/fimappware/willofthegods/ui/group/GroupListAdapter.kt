@@ -33,10 +33,12 @@ private val callbackHandler: CallbackHandler
     class GroupViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         private val name = itemView.findViewById<TextView>(R.id.tv_group_name)
         private val card = itemView.findViewById<CardView>(R.id.card)
-        var groupId = 0L
+        var group : Group? = null
+
+
 
         fun bind(group : Group, callbackHandler: CallbackHandler){
-            groupId = group.id
+            this.group = group
             name.text = group.Name
             card.setOnClickListener {
                 callbackHandler.groupClicked(group.id)
