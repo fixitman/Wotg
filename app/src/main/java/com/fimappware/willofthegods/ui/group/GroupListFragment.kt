@@ -28,12 +28,12 @@ import com.google.android.material.snackbar.Snackbar
 //private const val TAG = "GroupListFragment"
 class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler {
 
-    private lateinit var vm : GroupViewModel
-    private lateinit var recycler : RecyclerView
+    private lateinit var vm: GroupViewModel
+    private lateinit var recycler: RecyclerView
     private lateinit var adapter: GroupListAdapter
     private lateinit var navController: NavController
-    private lateinit var bind : FragmentGroupListBinding
-    private var deletedGroup : Group? = null
+    private lateinit var bind: FragmentGroupListBinding
+    private var deletedGroup: Group? = null
 
 
     override fun onAttach(context: Context) {
@@ -42,37 +42,37 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler {
         val db = AppDb.getInstance(context)
         val factory = GroupViewModel.Factory(db)
 
-        vm = activity?. let {
-            ViewModelProvider(it,factory)[GroupViewModel::class.java]
+        vm = activity?.let {
+            ViewModelProvider(it, factory)[GroupViewModel::class.java]
         } ?: throw (IllegalStateException("Fragment has null activity"))
 
         adapter = GroupListAdapter(this)
-        adapter.submitList(vm.groupList.value?: emptyList<Group>())
+        adapter.submitList(vm.groupList.value ?: emptyList<Group>())
 
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        bind = FragmentGroupListBinding.inflate(inflater,container,false)
+        bind = FragmentGroupListBinding.inflate(inflater, container, false)
         return bind.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        navController =view.findNavController()
+        navController = view.findNavController()
 
         recycler = bind.grouplist
         recycler.layoutManager = LinearLayoutManager(context)
         recycler.adapter = adapter
 
-        val editSwipeCallback = object : SwipeRightCallback(requireContext()){
+        val editSwipeCallback = object : SwipeRightCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val holder = viewHolder as GroupListAdapter.GroupViewHolder
-                holder.group?.let{
+                holder.group?.let {
                     editGroup(it)
                 }
             }
@@ -80,10 +80,10 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler {
         val editItemHelper = ItemTouchHelper(editSwipeCallback)
         editItemHelper.attachToRecyclerView(recycler)
 
-        val deleteSwipeCallback = object : SwipeLeftCallback(requireContext()){
+        val deleteSwipeCallback = object : SwipeLeftCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val holder = viewHolder as GroupListAdapter.GroupViewHolder
-                holder.group?.let{
+                holder.group?.let {
                     deleteGroup(it)
                 }
             }
@@ -112,47 +112,51 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler {
         }
     }
 
-    private fun addGroup(){
-        InputTextDialog("","New Group Name", object: InputTextDialog.EventListener{
+    private fun addGroup() {
+        InputTextDialog("", "New Group Name", object : InputTextDialog.EventListener {
             override fun onDlgPositiveEvent(dialog: DialogFragment) {
                 val text = (dialog as InputTextDialog).getInputText()
-                vm.addGroup(Group(0L,text))
+                vm.addGroup(Group(0L, text))
             }
 
             override fun onDlgNegativeEvent(dialog: DialogFragment) {
                 dialog.dismiss()
             }
-        }).show(childFragmentManager,"addgroupdialog")
+        }).show(childFragmentManager, "addgroupdialog")
     }
 
-    private fun editGroup( group: Group){
-        InputTextDialog(group.Name,"Change Group Name", object: InputTextDialog.EventListener{
+    private fun editGroup(group: Group) {
+        InputTextDialog(group.Name, "Change Group Name", object : InputTextDialog.EventListener {
             override fun onDlgPositiveEvent(dialog: DialogFragment) {
                 val text = (dialog as InputTextDialog).getInputText()
-                vm.updateGroup(Group(group.id,text))
+                vm.updateGroup(Group(group.id, text))
             }
 
             override fun onDlgNegativeEvent(dialog: DialogFragment) {
                 dialog.dismiss()
             }
-        }).show(childFragmentManager,"editgroupdialog")
+        }).show(childFragmentManager, "editgroupdialog")
     }
 
-    private fun deleteGroup(group : Group){
+    private fun deleteGroup(group: Group) {
         deletedGroup = group
         vm.deleteGroup(group.id)
-        Snackbar.make(requireView().findViewById(R.id.groupListConstraintLayout),"Group ${group.Name} deleted",Snackbar.LENGTH_LONG)
-                .setAction("undo"){
-                    undoDelete()
-                }.addCallback(object : Snackbar.Callback() {
-                    override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                        super.onDismissed(transientBottomBar, event)
-                        deletedGroup = null
-                    }
-                }).show()
+        Snackbar.make(
+            requireView().findViewById(R.id.groupListConstraintLayout),
+            "Group ${group.Name} deleted",
+            Snackbar.LENGTH_LONG
+        )
+            .setAction("undo") {
+                undoDelete()
+            }.addCallback(object : Snackbar.Callback() {
+                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                    super.onDismissed(transientBottomBar, event)
+                    deletedGroup = null
+                }
+            }).show()
     }
 
-    private fun undoDelete(){
+    private fun undoDelete() {
         deletedGroup?.let {
             vm.addGroup(it)
             deletedGroup = null
@@ -162,6 +166,6 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler {
     // required by  GroupListAdapter.CallbackHandler
     override fun groupClicked(id: Long) {
         val arguments = bundleOf(GroupItemsListFragment.ARG_GROUP_ID to id)
-        navController.navigate(R.id.action_groupListFragment_to_groupItemsListFragment,arguments)
+        navController.navigate(R.id.action_groupListFragment_to_groupItemsListFragment, arguments)
     }
 }

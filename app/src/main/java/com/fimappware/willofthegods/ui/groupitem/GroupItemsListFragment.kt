@@ -13,31 +13,32 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fimappware.willofthegods.R
 import com.fimappware.willofthegods.data.AppDb
 import com.fimappware.willofthegods.data.GroupItem
+import com.fimappware.willofthegods.ui.MainActivity
 
 private const val TAG = "MFC-GroupItemsListFrag"
 class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler{
 
-    private var groupId: Long = 0L
     private lateinit var vm : ItemListViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter : ItemListAdapter
 
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            groupId = it.getLong(ARG_GROUP_ID,0L)
-        }
-        if(groupId == 0L){
-            throw IllegalArgumentException("No group ID supplied")
-        }
-        val appDb = AppDb.getInstance(requireContext())
-        val factory = ItemListViewModel.Factory(groupId, appDb)
-        vm = ViewModelProvider(this,factory).get(ItemListViewModel::class.java)
-        adapter = ItemListAdapter(this)
-        adapter.submitList(vm.itemList.value)
+
+        arguments?.let { args ->
+            val groupId = args.getLong(ARG_GROUP_ID, 0L)
+            if(groupId == 0L){
+                throw java.lang.IllegalArgumentException("No GroupId Supplied")
+            }
+
+            val appDb = AppDb.getInstance(requireContext())
+            val factory = ItemListViewModel.Factory(groupId, appDb)
+            vm = ViewModelProvider(this,factory).get(ItemListViewModel::class.java)
+
+            adapter = ItemListAdapter(this)
+            adapter.submitList(vm.itemList.value)
+        } ?: throw IllegalArgumentException("Fragment call with no arguments")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -57,9 +58,15 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler{
             adapter.submitList(vm.itemList.value?.toMutableList())
         }
 
+        vm.groupName.observe(viewLifecycleOwner){
+            (activity as MainActivity).supportActionBar?.title = vm.groupName.value
+        }
+
         view.findViewById<Button>(R.id.go_button).setOnClickListener {
             onGoClicked()
         }
+
+
 
     }
 
