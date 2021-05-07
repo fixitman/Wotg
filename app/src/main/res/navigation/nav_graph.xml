@@ -10,19 +10,9 @@
         android:label="Group List"
         tools:layout="@layout/fragment_group_list">
         <action
-            android:id="@+id/action_groupListFragment_to_addEditGroupFragment"
-            app:destination="@id/addEditGroupFragment"
-            app:enterAnim="@anim/fragment_close_enter"
-            app:exitAnim="@anim/fragment_close_exit" />
-        <action
             android:id="@+id/action_groupListFragment_to_groupItemsListFragment"
             app:destination="@id/groupItemsListFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/addEditGroupFragment"
-        android:name="com.fimappware.willofthegods.ui.group.AddEditGroupFragment"
-        android:label="Add/Edit Group"
-        tools:layout="@layout/fragment_add_edit_group" />
     <fragment
         android:id="@+id/groupItemsListFragment"
         android:name="com.fimappware.willofthegods.ui.groupitem.GroupItemsListFragment"
