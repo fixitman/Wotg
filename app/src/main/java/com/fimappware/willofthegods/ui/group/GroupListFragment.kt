@@ -66,6 +66,18 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler {
         recycler.layoutManager = LinearLayoutManager(context)
         recycler.adapter = adapter
 
+        setUpAdapterSwipes()
+
+        vm.getAllGroups().observe(viewLifecycleOwner) {
+            adapter.submitList(it.toMutableList())  //toMutableList ensures a new instance of the list is sent
+            setListVisibility(it.size)
+        }
+        view.findViewById<FloatingActionButton>(R.id.fab_add_group).setOnClickListener {
+            addGroup()
+        }
+    }
+
+    private fun setUpAdapterSwipes() {
         val editSwipeCallback = object : SwipeRightCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val holder = viewHolder as GroupListAdapter.GroupViewHolder
@@ -87,16 +99,6 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler {
         }
         val deleteItemHelper = ItemTouchHelper(deleteSwipeCallback)
         deleteItemHelper.attachToRecyclerView(recycler)
-
-
-        vm.getAllGroups().observe(viewLifecycleOwner) {
-            adapter.submitList(it.toMutableList())  //toMutableList ensures a new instance of the list is sent
-            setListVisibility(it.size)
-        }
-        view.findViewById<FloatingActionButton>(R.id.fab_add_group).setOnClickListener {
-            addGroup()
-        }
-        //setListVisibility()
     }
 
     private fun setListVisibility(size: Int) {
