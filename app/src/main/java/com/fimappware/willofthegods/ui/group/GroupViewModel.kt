@@ -1,7 +1,10 @@
 package com.fimappware.willofthegods.ui.group
 
 import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.fimappware.willofthegods.data.AppDb
 import com.fimappware.willofthegods.data.Group
 import kotlinx.coroutines.launch
@@ -10,46 +13,34 @@ private const val TAG = "GroupViewModel"
 
 class GroupViewModel(private val appDb: AppDb) : ViewModel() {
 
-    private var groups = MutableLiveData<List<Group>>()
-    val groupList : LiveData<List<Group>> = groups
-
-    init {
-        refreshGroups()
-    }
-
-    suspend fun getGroupById(groupId : Long) : Group{
+    suspend fun getGroupById(groupId: Long): Group {
         return appDb.groupDao().getById(groupId)
     }
 
-    fun addGroup(group: Group){
+    fun getAllGroups(): LiveData<List<Group>> {
+        return appDb.groupDao().getAll()
+    }
+
+    fun addGroup(group: Group) {
         viewModelScope.launch {
             val id = appDb.groupDao().insert(group)
-            if (id > 0) refreshGroups()
         }
     }
 
-    fun deleteGroup(groupId : Long){
+    fun deleteGroup(groupId: Long) {
         viewModelScope.launch {
             appDb.groupDao().deleteById(groupId)
-            refreshGroups()
         }
     }
 
-    fun updateGroup(group: Group){
-        viewModelScope.launch{
+    fun updateGroup(group: Group) {
+        viewModelScope.launch {
             appDb.groupDao().update(group)
-            refreshGroups()
-        }
-    }
-
-    private fun refreshGroups(){
-        viewModelScope.launch{
-            groups.value = appDb.groupDao().getAll()
         }
     }
 
 
-    class Factory(private val appDb: AppDb) : ViewModelProvider.Factory{
+    class Factory(private val appDb: AppDb) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             Log.d(TAG, "creating viewModel")
             return modelClass.getConstructor(AppDb::class.java).newInstance(appDb)

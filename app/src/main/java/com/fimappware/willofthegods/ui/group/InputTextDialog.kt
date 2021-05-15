@@ -9,46 +9,44 @@ import androidx.fragment.app.DialogFragment
 import com.fimappware.willofthegods.R
 
 class InputTextDialog(
-    private val initialText : String = "",
-    private val title : String = "",
-    private val listener : EventListener
+    private val initialText: String = "",
+    private val title: String = "",
+    private val listener: EventListener
 ) : DialogFragment() {
 
-    interface EventListener{
+    interface EventListener {
         fun onDlgPositiveEvent(dialog: DialogFragment)
         fun onDlgNegativeEvent(dialog: DialogFragment)
     }
 
-    private lateinit var inputText : EditText
+    private lateinit var inputText: EditText
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-        activity?.let{
+        activity?.let {
             val b = AlertDialog.Builder(it)
-            val v = LayoutInflater.from(it).inflate(R.layout.input_dialog_layout,null,false)
+            val v = LayoutInflater.from(it).inflate(R.layout.input_dialog_layout, null, false)
             //todo make a better layout
             b.setView(v)
-            if(title.isNotBlank()) {
+            if (title.isNotBlank()) {
                 b.setTitle(title)
             }
-            b.setPositiveButton("OK"){_,_ ->
+            b.setPositiveButton("OK") { _, _ ->
                 listener.onDlgPositiveEvent(this)
             }
-            b.setNegativeButton("Cancel"){_,_ ->
+            b.setNegativeButton("Cancel") { _, _ ->
                 listener.onDlgNegativeEvent(this)
             }
             inputText = v.findViewById(R.id.et_group_name)
             inputText.setText(initialText)
             return b.create()
-        }?: throw IllegalStateException("No Activity")
+        } ?: throw IllegalStateException("No Activity")
 
 
     }
 
 
-
-
-    fun getInputText(): String{
+    fun getInputText(): String {
         return inputText.text.toString()
     }
 }

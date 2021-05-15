@@ -14,28 +14,27 @@ import com.fimappware.willofthegods.data.AppDb
  */
 
 private const val TAG = "MFCAddEditGroupFragment"
+
 class AddEditGroupFragment : Fragment() {
 
-    private lateinit var vm : GroupViewModel
+    private lateinit var vm: GroupViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val db = AppDb.getInstance(requireContext())
-        vm = ViewModelProvider(requireActivity(), GroupViewModel.Factory(db))[GroupViewModel::class.java]
+        vm = ViewModelProvider(
+            requireActivity(),
+            GroupViewModel.Factory(db)
+        )[GroupViewModel::class.java]
 
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_add_edit_group, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
     }
 
 

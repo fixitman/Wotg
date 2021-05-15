@@ -13,31 +13,30 @@ import com.fimappware.willofthegods.data.Group
 
 
 class GroupListAdapter(
-private val callbackHandler: CallbackHandler
-) : ListAdapter<Group, GroupListAdapter.GroupViewHolder>(GroupDiff()){
+    private val callbackHandler: CallbackHandler
+) : ListAdapter<Group, GroupListAdapter.GroupViewHolder>(GroupDiff()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.group_layout,parent,false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.group_layout, parent, false)
         return GroupViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: GroupViewHolder, position: Int) {
-        holder.bind(getItem(position),callbackHandler)
+        holder.bind(getItem(position), callbackHandler)
     }
 
-    interface CallbackHandler{
+    interface CallbackHandler {
         fun groupClicked(id: Long)
 
     }
 
-    class GroupViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    class GroupViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val name = itemView.findViewById<TextView>(R.id.tv_group_name)
         private val card = itemView.findViewById<CardView>(R.id.card)
-        var group : Group? = null
+        var group: Group? = null
 
 
-
-        fun bind(group : Group, callbackHandler: CallbackHandler){
+        fun bind(group: Group, callbackHandler: CallbackHandler) {
             this.group = group
             name.text = group.Name
             card.setOnClickListener {
@@ -47,7 +46,7 @@ private val callbackHandler: CallbackHandler
     }
 }
 
-class GroupDiff : DiffUtil.ItemCallback<Group>(){
+class GroupDiff : DiffUtil.ItemCallback<Group>() {
 
     override fun areItemsTheSame(oldItem: Group, newItem: Group): Boolean {
         return oldItem.id == newItem.id

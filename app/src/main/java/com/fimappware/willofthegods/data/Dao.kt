@@ -1,11 +1,12 @@
 package com.fimappware.willofthegods.data
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
 interface GroupDao{
     @Query("SELECT * FROM Groups")
-    suspend fun getAll() : List<Group>
+    fun getAll() : LiveData<List<Group>>
 
     @Query("SELECT * FROM GROUPS where _id = :id")
     suspend fun getById(id:Long) : Group

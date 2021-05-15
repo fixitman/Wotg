@@ -1,5 +1,6 @@
 package com.fimappware.willofthegods.ui.group
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -35,7 +36,6 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler {
     private lateinit var bind: FragmentGroupListBinding
     private var deletedGroup: Group? = null
 
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -47,8 +47,6 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler {
         } ?: throw (IllegalStateException("Fragment has null activity"))
 
         adapter = GroupListAdapter(this)
-        adapter.submitList(vm.groupList.value ?: emptyList<Group>())
-
     }
 
     override fun onCreateView(
@@ -59,7 +57,6 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler {
         bind = FragmentGroupListBinding.inflate(inflater, container, false)
         return bind.root
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -92,18 +89,18 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler {
         deleteItemHelper.attachToRecyclerView(recycler)
 
 
-        vm.groupList.observe(viewLifecycleOwner) {
+        vm.getAllGroups().observe(viewLifecycleOwner) {
             adapter.submitList(it.toMutableList())  //toMutableList ensures a new instance of the list is sent
-            setListVisibility()
+            setListVisibility(it.size)
         }
         view.findViewById<FloatingActionButton>(R.id.fab_add_group).setOnClickListener {
             addGroup()
         }
-        setListVisibility()
+        //setListVisibility()
     }
 
-    private fun setListVisibility() {
-        if (vm.groupList.value.isNullOrEmpty()) {
+    private fun setListVisibility(size: Int) {
+        if (size == 0) {
             bind.grouplist.visibility = View.GONE
             bind.tvNoGroups.visibility = View.VISIBLE
         } else {
@@ -138,6 +135,7 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler {
         }).show(childFragmentManager, "editgroupdialog")
     }
 
+    @SuppressLint("ShowToast")
     private fun deleteGroup(group: Group) {
         deletedGroup = group
         vm.deleteGroup(group.id)
