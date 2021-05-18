@@ -21,24 +21,25 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler{
     private lateinit var vm : ItemListViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter : ItemListAdapter
+    private var groupId = 0L
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        arguments?.let { args ->
-            val groupId = args.getLong(ARG_GROUP_ID, 0L)
-            if(groupId == 0L){
-                throw java.lang.IllegalArgumentException("No GroupId Supplied")
-            }
+        val args = requireArguments()
+        groupId = args.getLong(ARG_GROUP_ID, 0L)
+        if(groupId == 0L){
+            throw java.lang.IllegalArgumentException("No GroupId Supplied")
+        }
 
-            val appDb = AppDb.getInstance(requireContext())
-            val factory = ItemListViewModel.Factory(groupId, appDb)
-            vm = ViewModelProvider(this,factory).get(ItemListViewModel::class.java)
+        val appDb = AppDb.getInstance(requireContext())
+        val factory = ItemListViewModel.Factory(groupId, appDb)
+        vm = ViewModelProvider(this,factory).get(ItemListViewModel::class.java)
 
-            adapter = ItemListAdapter(this)
-            adapter.submitList(vm.itemList.value)
-        } ?: throw IllegalArgumentException("Fragment call with no arguments")
+        adapter = ItemListAdapter(this)
+
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -54,20 +55,17 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler{
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
 
-        vm.itemList.observe(viewLifecycleOwner){
-            adapter.submitList(vm.itemList.value?.toMutableList())
+        vm.getItemsInGroup(groupId).observe(viewLifecycleOwner){
+            adapter.submitList(it.toMutableList())
         }
 
-        vm.groupName.observe(viewLifecycleOwner){
-            (activity as MainActivity).supportActionBar?.title = vm.groupName.value
+        vm.getGroupName().observe(viewLifecycleOwner){
+            (activity as MainActivity).supportActionBar?.title = it
         }
 
         view.findViewById<Button>(R.id.go_button).setOnClickListener {
             onGoClicked()
         }
-
-
-
     }
 
     private fun onGoClicked() {

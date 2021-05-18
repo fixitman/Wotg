@@ -1,44 +1,26 @@
 package com.fimappware.willofthegods.ui.groupitem
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.fimappware.willofthegods.data.AppDb
 import com.fimappware.willofthegods.data.GroupItem
 import kotlinx.coroutines.launch
 
 class ItemListViewModel(private var groupId : Long, private val db: AppDb) : ViewModel() {
 
-
-    init{
-        updateItemList()
-        updateGroupName()
+    fun getGroupName() : LiveData<String>{
+        return db.groupDao().getGroupName(groupId)
     }
 
-    private var _itemList = MutableLiveData<List<GroupItem>>()
-    val itemList : LiveData<List<GroupItem>>
-        get() = _itemList
-
-    private var _groupName = MutableLiveData<String>("")
-    val groupName : LiveData<String>
-        get() = _groupName
-
-    private fun updateItemList(){
-        viewModelScope.launch {
-            val list = db.groupItemDao().getAllItemsInGroup(groupId)
-            _itemList.value = list
-        }
-    }
-
-    private fun updateGroupName(){
-        viewModelScope.launch {
-            val gName = db.groupDao().getById(groupId).Name
-            _groupName.value = gName
-        }
+    fun getItemsInGroup(id : Long) : LiveData<List<GroupItem>>{
+        return db.groupItemDao().getAllItemsInGroup(id)
     }
 
     fun setItemEnabled(itemId: Long, enabled: Boolean) {
         viewModelScope.launch {
             db.groupItemDao().setItemEnabled(itemId,enabled)
-            updateItemList()
         }
     }
 

@@ -8,6 +8,9 @@ interface GroupDao{
     @Query("SELECT * FROM Groups")
     fun getAll() : LiveData<List<Group>>
 
+    @Query("Select name from groups where _id = :id")
+    fun getGroupName(id: Long) : LiveData<String>
+
     @Query("SELECT * FROM GROUPS where _id = :id")
     suspend fun getById(id:Long) : Group
 
@@ -35,7 +38,7 @@ interface GroupItemDao{
     suspend fun getEnabledItemsInGroup(groupId : Long) : List<GroupItem>
 
     @Query("SELECT * FROM GroupItems WHERE groupId = :groupId")
-    suspend fun getAllItemsInGroup(groupId : Long) : List<GroupItem>
+    fun getAllItemsInGroup(groupId : Long) : LiveData<List<GroupItem>>
 
     @Query("Select * from GroupItems where _id = :id")
     suspend fun getById(id : Long): GroupItem
