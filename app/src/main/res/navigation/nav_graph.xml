@@ -16,6 +16,6 @@
     <fragment
         android:id="@+id/groupItemsListFragment"
         android:name="com.fimappware.willofthegods.ui.groupitem.GroupItemsListFragment"
-        android:label="fragment_group_items_list"
+        android:label=""
         tools:layout="@layout/fragment_group_items_list" />
 </navigation>

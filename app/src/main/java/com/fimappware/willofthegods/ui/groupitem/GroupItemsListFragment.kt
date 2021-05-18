@@ -18,7 +18,12 @@ import com.fimappware.willofthegods.ui.MainActivity
 private const val TAG = "MFC-GroupItemsListFrag"
 class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler{
 
-    private lateinit var vm : ItemListViewModel
+    private val vm : ItemListViewModel by lazy{
+        val appDb = AppDb.getInstance(requireContext())
+        val factory = ItemListViewModel.Factory(groupId, appDb)
+        ViewModelProvider(this,factory).get(ItemListViewModel::class.java)
+    }
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter : ItemListAdapter
     private var groupId = 0L
@@ -32,10 +37,6 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler{
         if(groupId == 0L){
             throw java.lang.IllegalArgumentException("No GroupId Supplied")
         }
-
-        val appDb = AppDb.getInstance(requireContext())
-        val factory = ItemListViewModel.Factory(groupId, appDb)
-        vm = ViewModelProvider(this,factory).get(ItemListViewModel::class.java)
 
         adapter = ItemListAdapter(this)
 
