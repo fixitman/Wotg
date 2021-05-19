@@ -74,9 +74,11 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler{
     }
 
     private fun onGoClicked() {
+        //todo : get rid of all this
         Log.d("MFC", "Go Clicked")
         val item = GroupItem(0L, 9L, "The Text", true, null)
-        val args = bundleOf(AddEditItemFragment.ARG_ITEM to item)
+        val args = bundleOf(AddEditItemFragment.ARG_ITEM to item
+            ,AddEditItemFragment.ARG_GROUP_ID to groupId)
         findNavController().navigate(R.id.action_groupItemsListFragment_to_addEditItemFragment,args)
     }
 

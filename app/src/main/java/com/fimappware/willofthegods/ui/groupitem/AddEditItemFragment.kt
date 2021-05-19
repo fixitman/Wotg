@@ -13,6 +13,7 @@ import com.fimappware.willofthegods.ui.MainActivity
 class AddEditItemFragment : Fragment() {
 
     private var item: GroupItem? = null
+    private var groupId = 0L
     private var editmode = false
 
     private lateinit var binding : FragmentAddEditItemBinding
@@ -21,8 +22,9 @@ class AddEditItemFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             item = it.getParcelable<GroupItem>(ARG_ITEM)
-            Log.d("MFC", "onCreate: ${item?.itemText}")
+            groupId = it.getLong(ARG_GROUP_ID)
         }
+
         editmode = (item != null)
         Log.d("MFC","Mode = $editmode")
 
@@ -59,6 +61,7 @@ class AddEditItemFragment : Fragment() {
 
     companion object {
         const val ARG_ITEM = "item"
+        const val ARG_GROUP_ID = "groupId"
 
     }
 }
