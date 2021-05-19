@@ -6,14 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fimappware.willofthegods.R
 import com.fimappware.willofthegods.data.AppDb
 import com.fimappware.willofthegods.data.GroupItem
 import com.fimappware.willofthegods.ui.MainActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 private const val TAG = "MFC-GroupItemsListFrag"
 class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler{
@@ -37,10 +40,7 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler{
         if(groupId == 0L){
             throw java.lang.IllegalArgumentException("No GroupId Supplied")
         }
-
         adapter = ItemListAdapter(this)
-
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -67,15 +67,25 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler{
         view.findViewById<Button>(R.id.go_button).setOnClickListener {
             onGoClicked()
         }
+
+        view.findViewById<FloatingActionButton>(R.id.group_item_fab).setOnClickListener {
+            findNavController().navigate(R.id.action_groupItemsListFragment_to_addEditItemFragment)
+        }
     }
 
     private fun onGoClicked() {
-        //todo implement go button click
-        Log.d(TAG, "onGoClicked: clicked")
+        Log.d("MFC", "Go Clicked")
+        val item = GroupItem(0L, 9L, "The Text", true, null)
+        val args = bundleOf(AddEditItemFragment.ARG_ITEM to item)
+        findNavController().navigate(R.id.action_groupItemsListFragment_to_addEditItemFragment,args)
     }
 
     override fun onSwitchCheckedChange(groupItem: GroupItem, isChecked: Boolean) {
         vm.setItemEnabled(groupItem.id, isChecked)
+    }
+
+    override fun onItemClicked(groupItem: GroupItem) {
+        Log.d("MFC", "Item Clicked : ${groupItem.itemText}")
     }
 
     companion object {

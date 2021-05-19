@@ -24,11 +24,13 @@ class ItemListAdapter(private val callbackHandler: CallbackHandler) : ListAdapte
 
     interface CallbackHandler{
         fun onSwitchCheckedChange(groupItem: GroupItem, isChecked : Boolean)
+        fun onItemClicked(groupItem: GroupItem)
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val itemText = itemView.findViewById<TextView>(R.id.tv_item_text)
         val switch = itemView.findViewById<SwitchMaterial>(R.id.sw_enabled)
+
 
         fun bind(groupItem: GroupItem){
             itemText.text = groupItem.itemText
@@ -36,6 +38,9 @@ class ItemListAdapter(private val callbackHandler: CallbackHandler) : ListAdapte
 
             switch.setOnCheckedChangeListener { _, isChecked ->
                 callbackHandler.onSwitchCheckedChange(groupItem, isChecked)
+            }
+            itemView.setOnClickListener {
+                callbackHandler.onItemClicked(groupItem)
             }
         }
     }

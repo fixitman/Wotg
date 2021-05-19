@@ -15,6 +15,9 @@
     <string name="ok">@android:string/ok</string>
     <string name="cancel">@android:string/cancel</string>
     <string name="group_name">Group Name</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="save">save</string>
 
 
 </resources>
