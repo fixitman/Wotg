@@ -41,6 +41,7 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler{
             throw java.lang.IllegalArgumentException("No GroupId Supplied")
         }
         adapter = ItemListAdapter(this)
+        vm.setGroupId(groupId)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -60,26 +61,31 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler{
             adapter.submitList(it.toMutableList())
         }
 
-        vm.getGroupName().observe(viewLifecycleOwner){
-            (activity as MainActivity).supportActionBar?.title = it
-        }
+
 
         view.findViewById<Button>(R.id.go_button).setOnClickListener {
             onGoClicked()
         }
 
         view.findViewById<FloatingActionButton>(R.id.group_item_fab).setOnClickListener {
-            findNavController().navigate(R.id.action_groupItemsListFragment_to_addEditItemFragment)
+            val args = bundleOf(
+                AddEditItemFragment.ARG_ITEM to null
+                , AddEditItemFragment.ARG_GROUP_ID to groupId)
+            findNavController().navigate(R.id.action_groupItemsListFragment_to_addEditItemFragment,args)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        vm.getGroupName().observe(viewLifecycleOwner){
+            (activity as MainActivity).supportActionBar?.title = it
         }
     }
 
     private fun onGoClicked() {
         //todo : get rid of all this
         Log.d("MFC", "Go Clicked")
-        val item = GroupItem(0L, 9L, "The Text", true, null)
-        val args = bundleOf(AddEditItemFragment.ARG_ITEM to item
-            ,AddEditItemFragment.ARG_GROUP_ID to groupId)
-        findNavController().navigate(R.id.action_groupItemsListFragment_to_addEditItemFragment,args)
+
     }
 
     override fun onSwitchCheckedChange(groupItem: GroupItem, isChecked: Boolean) {
@@ -88,6 +94,10 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler{
 
     override fun onItemClicked(groupItem: GroupItem) {
         Log.d("MFC", "Item Clicked : ${groupItem.itemText}")
+
+        val args = bundleOf(AddEditItemFragment.ARG_ITEM to groupItem
+            ,AddEditItemFragment.ARG_GROUP_ID to groupId)
+        findNavController().navigate(R.id.action_groupItemsListFragment_to_addEditItemFragment,args)
     }
 
     companion object {

@@ -10,6 +10,10 @@ import kotlinx.coroutines.launch
 
 class ItemListViewModel(private var groupId : Long, private val db: AppDb) : ViewModel() {
 
+    fun setGroupId(id : Long){
+        groupId = id
+    }
+
     fun getGroupName() : LiveData<String>{
         return db.groupDao().getGroupName(groupId)
     }
@@ -22,6 +26,14 @@ class ItemListViewModel(private var groupId : Long, private val db: AppDb) : Vie
         viewModelScope.launch {
             db.groupItemDao().setItemEnabled(itemId,enabled)
         }
+    }
+
+    fun updateItem(item : GroupItem) = viewModelScope.launch{
+        db.groupItemDao().update(item)
+    }
+
+    fun insertItem(item : GroupItem) = viewModelScope.launch {
+        db.groupItemDao().insert(item)
     }
 
     class Factory(private var groupId : Long, private val db : AppDb) : ViewModelProvider.Factory{
