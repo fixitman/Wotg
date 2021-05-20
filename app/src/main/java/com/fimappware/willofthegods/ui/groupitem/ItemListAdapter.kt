@@ -23,7 +23,7 @@ class ItemListAdapter(private val callbackHandler: CallbackHandler) : ListAdapte
     }
 
     interface CallbackHandler{
-        fun onSwitchCheckedChange(groupItem: GroupItem, isChecked : Boolean)
+        fun onSwitchClicked(groupItem: GroupItem, isChecked : Boolean)
         fun onItemClicked(groupItem: GroupItem)
     }
 
@@ -36,9 +36,17 @@ class ItemListAdapter(private val callbackHandler: CallbackHandler) : ListAdapte
             itemText.text = groupItem.itemText
             switch.isChecked = groupItem.enabled
 
-            switch.setOnCheckedChangeListener { _, isChecked ->
-                callbackHandler.onSwitchCheckedChange(groupItem, isChecked)
+//            switch.setOnCheckedChangeListener { _, isChecked ->
+//                Log.d("MFC","switched")
+//                callbackHandler.onSwitchCheckedChange(groupItem, isChecked)
+//            }
+
+            switch.setOnClickListener {
+                val checked = (it as SwitchMaterial).isChecked
+                callbackHandler.onSwitchClicked(groupItem, checked)
             }
+
+
             itemView.setOnClickListener {
                 callbackHandler.onItemClicked(groupItem)
             }

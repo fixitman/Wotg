@@ -1,5 +1,6 @@
 package com.fimappware.willofthegods.ui.groupitem
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -25,6 +26,7 @@ class ItemListViewModel(private var groupId : Long, private val db: AppDb) : Vie
     fun setItemEnabled(itemId: Long, enabled: Boolean) {
         viewModelScope.launch {
             db.groupItemDao().setItemEnabled(itemId,enabled)
+            Log.d("MFC","id: $itemId enabled: $enabled")
         }
     }
 

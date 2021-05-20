@@ -88,7 +88,7 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler{
 
     }
 
-    override fun onSwitchCheckedChange(groupItem: GroupItem, isChecked: Boolean) {
+    override fun onSwitchClicked(groupItem: GroupItem, isChecked: Boolean) {
         vm.setItemEnabled(groupItem.id, isChecked)
     }
 
