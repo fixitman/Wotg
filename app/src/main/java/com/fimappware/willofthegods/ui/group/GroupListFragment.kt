@@ -29,24 +29,30 @@ import com.google.android.material.snackbar.Snackbar
 //private const val TAG = "GroupListFragment"
 class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler {
 
-    private lateinit var vm: GroupViewModel
+    //private lateinit var vm: GroupViewModel
     private lateinit var recycler: RecyclerView
     private lateinit var adapter: GroupListAdapter
     private lateinit var navController: NavController
     private lateinit var bind: FragmentGroupListBinding
     private var deletedGroup: Group? = null
 
+    private val vm : GroupViewModel by lazy{
+        val appDb = AppDb.getInstance(requireContext())
+        val factory = GroupViewModel.Factory( appDb)
+        ViewModelProvider(requireActivity(),factory).get(GroupViewModel::class.java)
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        val db = AppDb.getInstance(context)
-        val factory = GroupViewModel.Factory(db)
+//        val db = AppDb.getInstance(context)
+//        val factory = GroupViewModel.Factory(db)
+//
+//        vm = activity?.let {
+//            ViewModelProvider(it, factory)[GroupViewModel::class.java]
+//        } ?: throw (IllegalStateException("Fragment has null activity"))
 
-        vm = activity?.let {
-            ViewModelProvider(it, factory)[GroupViewModel::class.java]
-        } ?: throw (IllegalStateException("Fragment has null activity"))
-
-        adapter = GroupListAdapter(this)
+       // adapter = GroupListAdapter(this)
     }
 
     override fun onCreateView(
@@ -64,6 +70,7 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler {
 
         recycler = bind.grouplist
         recycler.layoutManager = LinearLayoutManager(context)
+        adapter = GroupListAdapter(this)
         recycler.adapter = adapter
 
         setUpAdapterSwipes()

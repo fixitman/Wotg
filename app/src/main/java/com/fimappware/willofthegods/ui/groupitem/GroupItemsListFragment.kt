@@ -24,7 +24,7 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler{
     private val vm : ItemListViewModel by lazy{
         val appDb = AppDb.getInstance(requireContext())
         val factory = ItemListViewModel.Factory(groupId, appDb)
-        ViewModelProvider(this,factory).get(ItemListViewModel::class.java)
+        ViewModelProvider(requireActivity(),factory).get(ItemListViewModel::class.java)
     }
 
     private lateinit var recyclerView: RecyclerView
