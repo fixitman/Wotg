@@ -5,18 +5,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.fimappware.willofthegods.R
 import com.fimappware.willofthegods.data.AppDb
 import com.fimappware.willofthegods.data.GroupItem
+import com.fimappware.willofthegods.databinding.FragmentGroupItemsListBinding
 import com.fimappware.willofthegods.ui.MainActivity
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 private const val TAG = "MFC-GroupItemsListFrag"
 class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler{
@@ -27,10 +25,10 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler{
         ViewModelProvider(requireActivity(),factory).get(ItemListViewModel::class.java)
     }
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter : ItemListAdapter
-    private var groupId = 0L
 
+    private lateinit var adapter : ItemListAdapter
+    private lateinit var binding : FragmentGroupItemsListBinding
+    private var groupId = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,29 +43,32 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler{
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_group_items_list, container, false)
+                              savedInstanceState: Bundle?): View {
+        val binding = FragmentGroupItemsListBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recyclerView = view.findViewById(R.id.item_recycler_view)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = adapter
+        with(binding.itemRecyclerView) {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = adapter
+        }
 
         vm.getItemsInGroup(groupId).observe(viewLifecycleOwner){
             adapter.submitList(it.toMutableList())
         }
 
+        vm.getEnabledItemsInGroup(groupId).observe(viewLifecycleOwner){
+            binding.goButton.isEnabled = it.size > 1
+        }
 
-
-        view.findViewById<Button>(R.id.go_button).setOnClickListener {
+        binding.goButton.setOnClickListener {
             onGoClicked()
         }
 
-        view.findViewById<FloatingActionButton>(R.id.group_item_fab).setOnClickListener {
+        binding.groupItemFab.setOnClickListener {
             val args = bundleOf(
                 AddEditItemFragment.ARG_ITEM to null
                 , AddEditItemFragment.ARG_GROUP_ID to groupId)
