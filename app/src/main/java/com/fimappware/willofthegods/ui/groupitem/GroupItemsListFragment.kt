@@ -26,7 +26,7 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler{
     }
 
 
-    private lateinit var adapter : ItemListAdapter
+    private lateinit var listAdapter : ItemListAdapter
     private lateinit var binding : FragmentGroupItemsListBinding
     private var groupId = 0L
 
@@ -38,13 +38,13 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler{
         if(groupId == 0L){
             throw java.lang.IllegalArgumentException("No GroupId Supplied")
         }
-        adapter = ItemListAdapter(this)
+        listAdapter = ItemListAdapter(this)
         vm.setGroupId(groupId)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        val binding = FragmentGroupItemsListBinding.inflate(inflater,container,false)
+        binding = FragmentGroupItemsListBinding.inflate(inflater,container,false)
         return binding.root
     }
 
@@ -53,11 +53,11 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler{
 
         with(binding.itemRecyclerView) {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = adapter
+            adapter = listAdapter
         }
 
         vm.getItemsInGroup(groupId).observe(viewLifecycleOwner){
-            adapter.submitList(it.toMutableList())
+            listAdapter.submitList(it.toMutableList())
         }
 
         vm.getEnabledItemsInGroup(groupId).observe(viewLifecycleOwner){
