@@ -1,13 +1,12 @@
 package com.fimappware.willofthegods.ui.group
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -24,10 +23,12 @@ import com.fimappware.willofthegods.databinding.FragmentGroupListBinding
 import com.fimappware.willofthegods.ui.groupitem.GroupItemsListFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import eltos.simpledialogfragment.SimpleDialog
+import eltos.simpledialogfragment.input.SimpleInputDialog
 
 
 //private const val TAG = "GroupListFragment"
-class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler {
+class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler, SimpleDialog.OnDialogResultListener {
 
     //private lateinit var vm: GroupViewModel
     private lateinit var recycler: RecyclerView
@@ -35,24 +36,13 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler {
     private lateinit var navController: NavController
     private lateinit var bind: FragmentGroupListBinding
     private var deletedGroup: Group? = null
+    private var editingGroup : Group? = null
+
 
     private val vm : GroupViewModel by lazy{
         val appDb = AppDb.getInstance(requireContext())
         val factory = GroupViewModel.Factory( appDb)
         ViewModelProvider(requireActivity(),factory).get(GroupViewModel::class.java)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-//        val db = AppDb.getInstance(context)
-//        val factory = GroupViewModel.Factory(db)
-//
-//        vm = activity?.let {
-//            ViewModelProvider(it, factory)[GroupViewModel::class.java]
-//        } ?: throw (IllegalStateException("Fragment has null activity"))
-
-       // adapter = GroupListAdapter(this)
     }
 
     override fun onCreateView(
@@ -119,30 +109,34 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler {
     }
 
     private fun addGroup() {
-        InputTextDialog("", "New Group Name", object : InputTextDialog.EventListener {
-            override fun onDlgPositiveEvent(dialog: DialogFragment) {
-                val text = (dialog as InputTextDialog).getInputText()
-                vm.addGroup(Group(0L, text))
-            }
-
-            override fun onDlgNegativeEvent(dialog: DialogFragment) {
-                dialog.dismiss()
-            }
-        }).show(childFragmentManager, "addgroupdialog")
+        SimpleInputDialog.build()
+            .title("Add Group")
+            .inputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES)
+            .hint("Group Name")
+            .cancelable(false)
+            .pos("OK")
+            .neg("CANCEL")
+            .show(this, "GET_GROUP_NAME")
     }
 
-    private fun editGroup(group: Group) {
-        InputTextDialog(group.Name, "Change Group Name", object : InputTextDialog.EventListener {
-            override fun onDlgPositiveEvent(dialog: DialogFragment) {
-                val text = (dialog as InputTextDialog).getInputText()
-                vm.updateGroup(Group(group.id, text))
-            }
+    private fun editGroup(group : Group){
+        editingGroup = group
+        SimpleInputDialog.build()
+            .title("Edit Group")
+            .inputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES)
+            .hint("Group Name")
+            .text(group.Name)
+            .neg("CANCEL")
+            .pos("OK")
+            .cancelable(false)
+            .show(this, "EDIT_GROUP_NAME")
 
-            override fun onDlgNegativeEvent(dialog: DialogFragment) {
-                dialog.dismiss()
-            }
-        }).show(childFragmentManager, "editgroupdialog")
+
+
     }
+
+
+
 
     @SuppressLint("ShowToast")
     private fun deleteGroup(group: Group) {
@@ -174,5 +168,41 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler {
     override fun groupClicked(id: Long) {
         val arguments = bundleOf(GroupItemsListFragment.ARG_GROUP_ID to id)
         navController.navigate(R.id.action_groupListFragment_to_groupItemsListFragment, arguments)
+    }
+
+    override fun onResult(dialogTag: String, which: Int, extras: Bundle): Boolean {
+        return when(dialogTag){
+            "GET_GROUP_NAME" -> {
+                when(which){
+                    SimpleDialog.OnDialogResultListener.BUTTON_POSITIVE -> {
+                        extras.getString(SimpleInputDialog.TEXT)?.let{
+                            vm.addGroup(Group(0L,it))
+                        }
+                    }
+                    else -> true
+                }
+                true
+            }
+
+            "EDIT_GROUP_NAME" -> {
+                when(which){
+                    SimpleDialog.OnDialogResultListener.BUTTON_POSITIVE -> {
+                        val text = extras.getString(SimpleInputDialog.TEXT)
+                        if(editingGroup?.Name == text){
+                            adapter.notifyDataSetChanged() // removes green edit line
+                        }else {
+                            vm.updateGroup(Group(editingGroup!!.id, text!!))
+                        }
+                    }
+                    SimpleDialog.OnDialogResultListener.BUTTON_NEGATIVE -> {
+                        adapter.notifyDataSetChanged()
+                    }
+                }
+                true
+            }
+
+            else -> false
+        }
+
     }
 }
