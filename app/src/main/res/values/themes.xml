@@ -13,11 +13,16 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="android:windowBackground">@color/green_pale</item>
+        <item name="simpleDialogTheme">@style/MyDialogStyle</item>
     </style>
 
     <style name="Theme.WillOfTheGods.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="MyDialogStyle" parent="SimpleDialogTheme.Material">
+
     </style>
 
     <style name="Theme.WillOfTheGods.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
