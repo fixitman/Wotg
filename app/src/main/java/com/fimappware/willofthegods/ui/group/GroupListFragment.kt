@@ -21,7 +21,6 @@ import com.fimappware.willofthegods.data.AppDb
 import com.fimappware.willofthegods.data.Group
 import com.fimappware.willofthegods.databinding.FragmentGroupListBinding
 import com.fimappware.willofthegods.ui.groupitem.GroupItemsListFragment
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import eltos.simpledialogfragment.SimpleDialog
 import eltos.simpledialogfragment.input.SimpleInputDialog
@@ -30,7 +29,6 @@ import eltos.simpledialogfragment.input.SimpleInputDialog
 //private const val TAG = "GroupListFragment"
 class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler, SimpleDialog.OnDialogResultListener {
 
-    //private lateinit var vm: GroupViewModel
     private lateinit var recycler: RecyclerView
     private lateinit var adapter: GroupListAdapter
     private lateinit var navController: NavController
@@ -69,7 +67,7 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler, SimpleDi
             adapter.submitList(it.toMutableList())  //toMutableList ensures a new instance of the list is sent
             setListVisibility(it.size)
         }
-        view.findViewById<FloatingActionButton>(R.id.fab_add_group).setOnClickListener {
+        bind.fabAddGroup.setOnClickListener {
             addGroup()
         }
     }
@@ -116,7 +114,7 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler, SimpleDi
             .cancelable(false)
             .pos("OK")
             .neg("CANCEL")
-            .show(this, "GET_GROUP_NAME")
+            .show(this, ADD_GROUP_DIALOG)
     }
 
     private fun editGroup(group : Group){
@@ -129,14 +127,8 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler, SimpleDi
             .neg("CANCEL")
             .pos("OK")
             .cancelable(false)
-            .show(this, "EDIT_GROUP_NAME")
-
-
-
+            .show(this, EDIT_GROUP_DIALOG)
     }
-
-
-
 
     @SuppressLint("ShowToast")
     private fun deleteGroup(group: Group) {
@@ -172,37 +164,41 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler, SimpleDi
 
     override fun onResult(dialogTag: String, which: Int, extras: Bundle): Boolean {
         return when(dialogTag){
-            "GET_GROUP_NAME" -> {
+            ADD_GROUP_DIALOG -> {
                 when(which){
                     SimpleDialog.OnDialogResultListener.BUTTON_POSITIVE -> {
                         extras.getString(SimpleInputDialog.TEXT)?.let{
                             vm.addGroup(Group(0L,it))
                         }
                     }
-                    else -> true
                 }
                 true
             }
 
-            "EDIT_GROUP_NAME" -> {
+            EDIT_GROUP_DIALOG -> {
                 when(which){
                     SimpleDialog.OnDialogResultListener.BUTTON_POSITIVE -> {
                         val text = extras.getString(SimpleInputDialog.TEXT)
                         if(editingGroup?.Name == text){
                             adapter.notifyDataSetChanged() // removes green edit line
                         }else {
-                            vm.updateGroup(Group(editingGroup!!.id, text!!))
+                            val id = editingGroup!!.id
+                            vm.updateGroup(Group(id, text!!))
                         }
                     }
                     SimpleDialog.OnDialogResultListener.BUTTON_NEGATIVE -> {
                         adapter.notifyDataSetChanged()
                     }
                 }
+                editingGroup = null
                 true
             }
-
             else -> false
         }
+    }
 
+    companion object{
+        const val EDIT_GROUP_DIALOG = "edit group dialog"
+        const val ADD_GROUP_DIALOG = "add group dialog"
     }
 }

@@ -8,6 +8,8 @@ import android.widget.EditText
 import androidx.fragment.app.DialogFragment
 import com.fimappware.willofthegods.R
 
+//todo Delete this class if not used
+
 class InputTextDialog(
     private val initialText: String = "",
     private val title: String = "",
