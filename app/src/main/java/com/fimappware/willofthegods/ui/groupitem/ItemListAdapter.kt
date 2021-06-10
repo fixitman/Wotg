@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -30,11 +31,13 @@ class ItemListAdapter(private val callbackHandler: CallbackHandler) : ListAdapte
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val itemText = itemView.findViewById<TextView>(R.id.tv_item_text)
         val switch = itemView.findViewById<SwitchMaterial>(R.id.sw_enabled)
+        var card = itemView.findViewById<CardView>(R.id.item_card)
 
 
         fun bind(groupItem: GroupItem){
             itemText.text = groupItem.itemText
             switch.isChecked = groupItem.enabled
+            card.setCardBackgroundColor(groupItem.color)
 
             switch.setOnClickListener {
                 val checked = (it as SwitchMaterial).isChecked
@@ -56,7 +59,8 @@ class ListItemDiff() : DiffUtil.ItemCallback<GroupItem>(){
     override fun areContentsTheSame(oldItem: GroupItem, newItem: GroupItem): Boolean{
         return oldItem.enabled == newItem.enabled
                 && oldItem.groupId == newItem.groupId
-                && oldItem.imageURI == newItem.imageURI
+                //&& oldItem.imageURI == newItem.imageURI
                 && oldItem.itemText == newItem.itemText
+                && oldItem.color == newItem.color
     }
 }

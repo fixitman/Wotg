@@ -38,7 +38,7 @@ class AddEditItemFragment : Fragment() {
         }
 
         if(item == null){
-            item = GroupItem(0L,groupId,"",imageURI = "")
+            item = GroupItem(0L,groupId,"")
             editmode = false
         }else {
             editmode = true

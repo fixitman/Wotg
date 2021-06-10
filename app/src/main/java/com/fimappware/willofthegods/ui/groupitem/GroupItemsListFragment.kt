@@ -1,6 +1,7 @@
 package com.fimappware.willofthegods.ui.groupitem
 
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,9 +16,14 @@ import com.fimappware.willofthegods.data.AppDb
 import com.fimappware.willofthegods.data.GroupItem
 import com.fimappware.willofthegods.databinding.FragmentGroupItemsListBinding
 import com.fimappware.willofthegods.ui.MainActivity
+import eltos.simpledialogfragment.SimpleDialog
+import eltos.simpledialogfragment.color.SimpleColorDialog
+import eltos.simpledialogfragment.form.ColorField
+import eltos.simpledialogfragment.form.Input
+import eltos.simpledialogfragment.form.SimpleFormDialog
 
 private const val TAG = "MFC-GroupItemsListFrag"
-class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler{
+class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler, SimpleDialog.OnDialogResultListener{
 
     private val vm : ItemListViewModel by lazy{
         val appDb = AppDb.getInstance(requireContext())
@@ -25,10 +31,10 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler{
         ViewModelProvider(requireActivity(),factory).get(ItemListViewModel::class.java)
     }
 
-
     private lateinit var listAdapter : ItemListAdapter
     private lateinit var binding : FragmentGroupItemsListBinding
     private var groupId = 0L
+    private var editingItem : GroupItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,13 +102,57 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler{
     override fun onItemClicked(groupItem: GroupItem) {
         Log.d("MFC", "Item Clicked : ${groupItem.itemText}")
 
-        val args = bundleOf(AddEditItemFragment.ARG_ITEM to groupItem
-            ,AddEditItemFragment.ARG_GROUP_ID to groupId)
-        findNavController().navigate(R.id.action_groupItemsListFragment_to_addEditItemFragment,args)
+//        val args = bundleOf(AddEditItemFragment.ARG_ITEM to groupItem
+//            ,AddEditItemFragment.ARG_GROUP_ID to groupId)
+//        findNavController().navigate(R.id.action_groupItemsListFragment_to_addEditItemFragment,args)
+        editItem(groupItem)
+    }
+
+    private fun editItem(item: GroupItem){
+        editingItem = item
+        SimpleFormDialog.build()
+            .title("Edit Item")
+            .cancelable(false)
+            .pos("OK")
+            .neg("CANCEL")
+            .fields(
+                Input.plain(FIELD_TEXT)
+                    .hint("Text")
+                    .inputType(InputType.TYPE_CLASS_TEXT)
+                    .text(item.itemText)
+                    .required(),
+                ColorField.picker(FIELD_COLOR)
+                    .allowCustom(false)
+                    .color(item.color)
+                    .label("Color")
+                    .colors(requireContext(),SimpleColorDialog.MATERIAL_COLOR_PALLET_LIGHT)
+
+            )
+            .show(this,EDIT_ITEM_DIALOG)
+    }
+
+    override fun onResult(dialogTag: String, which: Int, extras: Bundle): Boolean {
+        return when(dialogTag){
+            EDIT_ITEM_DIALOG -> {
+                when(which){
+                    SimpleFormDialog.BUTTON_POSITIVE -> {
+                        val item = editingItem?.copy(itemText = extras.getString(FIELD_TEXT)
+                            ,color = extras.getInt(FIELD_COLOR))
+                        vm.updateItem(item!!)
+                    }
+                }
+                editingItem = null
+                true
+            }
+            else -> false
+        }
     }
 
     companion object {
         const val ARG_GROUP_ID = "GroupId"
-    }
+        const val FIELD_TEXT = "Text"
+        const val FIELD_COLOR = "Color"
+        const val EDIT_ITEM_DIALOG = "Edit Item Dialog"
 
+    }
 }

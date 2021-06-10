@@ -23,7 +23,8 @@ data class GroupItem(
         var groupId : Long,
         var itemText : String?,
         var enabled : Boolean = true,
-        var imageURI : String?
+        var color : Int = 0xFFFFFFFF.toInt()
+        //,var imageURI : String?
 ): Parcelable
 
 object Triggers{
