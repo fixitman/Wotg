@@ -6,12 +6,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.fimappware.willofthegods.R
 import com.fimappware.willofthegods.data.AppDb
 import com.fimappware.willofthegods.data.GroupItem
 import com.fimappware.willofthegods.databinding.FragmentGroupItemsListBinding
@@ -21,6 +18,7 @@ import eltos.simpledialogfragment.color.SimpleColorDialog
 import eltos.simpledialogfragment.form.ColorField
 import eltos.simpledialogfragment.form.Input
 import eltos.simpledialogfragment.form.SimpleFormDialog
+import kotlin.random.Random
 
 private const val TAG = "MFC-GroupItemsListFrag"
 class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler, SimpleDialog.OnDialogResultListener{
@@ -75,11 +73,35 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler, Simp
         }
 
         binding.groupItemFab.setOnClickListener {
-            val args = bundleOf(
-                AddEditItemFragment.ARG_ITEM to null
-                , AddEditItemFragment.ARG_GROUP_ID to groupId)
-            findNavController().navigate(R.id.action_groupItemsListFragment_to_addEditItemFragment,args)
+//            val args = bundleOf(
+//                AddEditItemFragment.ARG_ITEM to null
+//                , AddEditItemFragment.ARG_GROUP_ID to groupId)
+//            findNavController().navigate(R.id.action_groupItemsListFragment_to_addEditItemFragment,args)
+            addItem()
         }
+    }
+
+    private fun addItem() {
+        val colors = resources.getIntArray(SimpleColorDialog.MATERIAL_COLOR_PALLET_LIGHT)
+        val color = colors[Random.nextInt(colors.size)]
+        SimpleFormDialog.build()
+            .title("Edit Item")
+            .cancelable(false)
+            .pos("OK")
+            .neg("CANCEL")
+            .fields(
+                Input.plain(FIELD_TEXT)
+                    .hint("Text")
+                    .inputType(InputType.TYPE_CLASS_TEXT)
+                    .required(),
+                ColorField.picker(FIELD_COLOR)
+                    .allowCustom(false)
+                    .color(color)
+                    .label("Color")
+                    .colors(requireContext(),SimpleColorDialog.MATERIAL_COLOR_PALLET_LIGHT)
+
+            )
+            .show(this,ADD_ITEM_DIALOG)
     }
 
     override fun onResume() {
@@ -144,6 +166,20 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler, Simp
                 editingItem = null
                 true
             }
+            ADD_ITEM_DIALOG -> {
+                when(which){
+                    SimpleFormDialog.BUTTON_POSITIVE -> {
+                        val item = GroupItem(
+                            id = 0L,
+                            groupId = groupId,
+                            itemText = extras.getString(FIELD_TEXT),
+                            color = extras.getInt(FIELD_COLOR)
+                        )
+                        vm.insertItem(item)
+                    }
+                }
+                true
+            }
             else -> false
         }
     }
@@ -153,6 +189,7 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler, Simp
         const val FIELD_TEXT = "Text"
         const val FIELD_COLOR = "Color"
         const val EDIT_ITEM_DIALOG = "Edit Item Dialog"
+        const val ADD_ITEM_DIALOG = "Add Item Dialog"
 
     }
 }
