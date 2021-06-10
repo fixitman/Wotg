@@ -20,7 +20,6 @@
     app:contentPaddingLeft="16dp"
     app:contentPaddingRight="16dp"
     app:contentPaddingTop="4dp"
-    app:cardBackgroundColor="@color/dark_white"
     >
 
     <LinearLayout

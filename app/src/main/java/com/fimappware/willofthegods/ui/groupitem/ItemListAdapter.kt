@@ -1,5 +1,6 @@
 package com.fimappware.willofthegods.ui.groupitem
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,10 +35,17 @@ class ItemListAdapter(private val callbackHandler: CallbackHandler) : ListAdapte
         var card = itemView.findViewById<CardView>(R.id.item_card)
 
 
+
         fun bind(groupItem: GroupItem){
             itemText.text = groupItem.itemText
             switch.isChecked = groupItem.enabled
-            card.setCardBackgroundColor(groupItem.color)
+            itemView.isEnabled = groupItem.enabled
+            itemText.isEnabled = groupItem.enabled
+           if(groupItem.enabled){
+                card.setCardBackgroundColor(groupItem.color)
+            }else{
+                card.setCardBackgroundColor(Color.WHITE)
+           }
 
             switch.setOnClickListener {
                 val checked = (it as SwitchMaterial).isChecked
