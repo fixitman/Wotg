@@ -33,7 +33,6 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler, SimpleDi
     private lateinit var adapter: GroupListAdapter
     private lateinit var navController: NavController
     private lateinit var bind: FragmentGroupListBinding
-    private var deletedGroup: Group? = null
     private var editingGroup : Group? = null
 
 
@@ -132,7 +131,6 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler, SimpleDi
 
     @SuppressLint("ShowToast")
     private fun deleteGroup(group: Group) {
-        deletedGroup = group
         vm.deleteGroup(group.id)
         Snackbar.make(
             requireView().findViewById(R.id.groupListConstraintLayout),
@@ -140,20 +138,12 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler, SimpleDi
             Snackbar.LENGTH_LONG
         )
             .setAction("undo") {
-                undoDelete()
+                vm.addGroup(group)
             }.addCallback(object : Snackbar.Callback() {
                 override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                     super.onDismissed(transientBottomBar, event)
-                    deletedGroup = null
                 }
             }).show()
-    }
-
-    private fun undoDelete() {
-        deletedGroup?.let {
-            vm.addGroup(it)
-            deletedGroup = null
-        }
     }
 
     // required by  GroupListAdapter.CallbackHandler
