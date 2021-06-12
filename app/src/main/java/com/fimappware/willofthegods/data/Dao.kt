@@ -51,6 +51,9 @@ interface GroupItemDao{
 
     @Query("UPDATE GroupItems SET enabled = :enabled WHERE _id = :itemId")
     suspend fun setItemEnabled(itemId: Long, enabled: Boolean)
+
+    @Delete
+    suspend fun delete(groupItem: GroupItem?)
 }
 
 

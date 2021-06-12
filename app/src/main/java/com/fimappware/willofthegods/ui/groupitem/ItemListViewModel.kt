@@ -42,6 +42,10 @@ class ItemListViewModel(private var groupId : Long, private val db: AppDb) : Vie
         db.groupItemDao().insert(item)
     }
 
+    fun deleteItem(groupItem: GroupItem?) = viewModelScope.launch{
+        db.groupItemDao().delete(groupItem)
+    }
+
     class Factory(private var groupId : Long, private val db : AppDb) : ViewModelProvider.Factory{
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             return modelClass.getConstructor(Long::class.java, AppDb::class.java).newInstance(groupId,db)

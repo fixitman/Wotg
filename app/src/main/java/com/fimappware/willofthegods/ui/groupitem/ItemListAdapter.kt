@@ -30,13 +30,15 @@ class ItemListAdapter(private val callbackHandler: CallbackHandler) : ListAdapte
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val itemText = itemView.findViewById<TextView>(R.id.tv_item_text)
-        val switch = itemView.findViewById<SwitchMaterial>(R.id.sw_enabled)
-        var card = itemView.findViewById<CardView>(R.id.item_card)
+        var groupItem : GroupItem? = null
+        val itemText : TextView = itemView.findViewById(R.id.tv_item_text)
+        val switch : SwitchMaterial = itemView.findViewById(R.id.sw_enabled)
+        var card : CardView = itemView.findViewById(R.id.item_card)
 
 
 
         fun bind(groupItem: GroupItem){
+            this.groupItem = groupItem
             itemText.text = groupItem.itemText
             switch.isChecked = groupItem.enabled
             itemView.isEnabled = groupItem.enabled

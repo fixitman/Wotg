@@ -1,5 +1,6 @@
 package com.fimappware.willofthegods.ui.groupitem
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -8,11 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.fimappware.willofthegods.R
+import com.fimappware.willofthegods.SwipeLeftCallback
 import com.fimappware.willofthegods.data.AppDb
 import com.fimappware.willofthegods.data.GroupItem
 import com.fimappware.willofthegods.databinding.FragmentGroupItemsListBinding
 import com.fimappware.willofthegods.ui.MainActivity
+import com.google.android.material.snackbar.Snackbar
 import eltos.simpledialogfragment.SimpleDialog
 import eltos.simpledialogfragment.color.SimpleColorDialog
 import eltos.simpledialogfragment.form.ColorField
@@ -33,6 +39,7 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler, Simp
     private lateinit var binding : FragmentGroupItemsListBinding
     private var groupId = 0L
     private var editingItem : GroupItem? = null
+    //private var deletedItem : GroupItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +67,8 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler, Simp
             adapter = listAdapter
         }
 
+        setUpAdapterSwipes()
+
         vm.getItemsInGroup(groupId).observe(viewLifecycleOwner){
             listAdapter.submitList(it.toMutableList())
         }
@@ -73,13 +82,47 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler, Simp
         }
 
         binding.groupItemFab.setOnClickListener {
-//            val args = bundleOf(
-//                AddEditItemFragment.ARG_ITEM to null
-//                , AddEditItemFragment.ARG_GROUP_ID to groupId)
-//            findNavController().navigate(R.id.action_groupItemsListFragment_to_addEditItemFragment,args)
             addItem()
         }
     }
+
+    private fun setUpAdapterSwipes() {
+
+        val deleteSwipeCallback = object : SwipeLeftCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val holder = viewHolder as ItemListAdapter.ViewHolder
+                deleteItem(holder.groupItem!!)
+            }
+        }
+        val deleteItemHelper = ItemTouchHelper(deleteSwipeCallback)
+        deleteItemHelper.attachToRecyclerView(binding.itemRecyclerView)
+    }
+
+    @SuppressLint("ShowToast")
+    private fun deleteItem(groupItem: GroupItem) {
+        //deletedItem = groupItem
+        vm.deleteItem(groupItem)
+        Snackbar.make(
+            requireView().findViewById(R.id.item_constraint_layout),
+            "${groupItem.itemText} deleted",
+            Snackbar.LENGTH_LONG
+        )
+            .setAction("undo") {
+                vm.insertItem(groupItem)
+            }.addCallback(object : Snackbar.Callback() {
+                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                    super.onDismissed(transientBottomBar, event)
+                    //deletedItem = null
+                }
+            }).show()
+    }
+
+//    private fun undoDelete(groupItem: GroupItem) {
+//        deletedItem?.let {
+//            vm.insertItem(it)
+//            deletedItem = null
+//        }
+//    }
 
     private fun addItem() {
         val colors = resources.getIntArray(SimpleColorDialog.MATERIAL_COLOR_PALLET_LIGHT)
@@ -99,7 +142,6 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler, Simp
                     .color(color)
                     .label("Color")
                     .colors(requireContext(),SimpleColorDialog.MATERIAL_COLOR_PALLET_LIGHT)
-
             )
             .show(this,ADD_ITEM_DIALOG)
     }
@@ -114,7 +156,6 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler, Simp
     private fun onGoClicked() {
         //todo : get rid of all this
         Log.d("MFC", "Go Clicked")
-
     }
 
     override fun onSwitchClicked(groupItem: GroupItem, isChecked: Boolean) {
@@ -123,10 +164,6 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler, Simp
 
     override fun onItemClicked(groupItem: GroupItem) {
         Log.d("MFC", "Item Clicked : ${groupItem.itemText}")
-
-//        val args = bundleOf(AddEditItemFragment.ARG_ITEM to groupItem
-//            ,AddEditItemFragment.ARG_GROUP_ID to groupId)
-//        findNavController().navigate(R.id.action_groupItemsListFragment_to_addEditItemFragment,args)
         editItem(groupItem)
     }
 
@@ -148,7 +185,6 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler, Simp
                     .color(item.color)
                     .label("Color")
                     .colors(requireContext(),SimpleColorDialog.MATERIAL_COLOR_PALLET_LIGHT)
-
             )
             .show(this,EDIT_ITEM_DIALOG)
     }
@@ -190,6 +226,5 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler, Simp
         const val FIELD_COLOR = "Color"
         const val EDIT_ITEM_DIALOG = "Edit Item Dialog"
         const val ADD_ITEM_DIALOG = "Add Item Dialog"
-
     }
 }
