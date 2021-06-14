@@ -35,7 +35,10 @@ interface GroupItemDao{
     suspend fun getAll() : List<GroupItem>
 
     @Query("SELECT * FROM GroupItems where enabled and groupId = :groupId")
-    fun getEnabledItemsInGroup(groupId : Long) : LiveData<List<GroupItem>>
+    suspend fun getEnabledItemsInGroup(groupId : Long) : List<GroupItem>
+
+    @Query("SELECT * FROM GroupItems where enabled and groupId = :groupId")
+    fun getEnabledItemsInGroupLive(groupId: Long): LiveData<List<GroupItem>>
 
     @Query("SELECT * FROM GroupItems WHERE groupId = :groupId")
     fun getAllItemsInGroup(groupId : Long) : LiveData<List<GroupItem>>
@@ -54,6 +57,7 @@ interface GroupItemDao{
 
     @Delete
     suspend fun delete(groupItem: GroupItem?)
+
 }
 
 

@@ -23,8 +23,12 @@ class ItemListViewModel(private var groupId : Long, private val db: AppDb) : Vie
         return db.groupItemDao().getAllItemsInGroup(id)
     }
 
-    fun getEnabledItemsInGroup(group : Long) : LiveData<List<GroupItem>>{
+    suspend fun getEnabledItemsInGroup(group : Long) : List<GroupItem>{
         return db.groupItemDao().getEnabledItemsInGroup(group)
+    }
+
+    fun getEnabledItemsInGroupLive(group : Long) : LiveData<List<GroupItem>>{
+        return db.groupItemDao().getEnabledItemsInGroupLive(group)
     }
 
     fun setItemEnabled(itemId: Long, enabled: Boolean) {

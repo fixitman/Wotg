@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,12 +19,16 @@ import com.fimappware.willofthegods.data.AppDb
 import com.fimappware.willofthegods.data.GroupItem
 import com.fimappware.willofthegods.databinding.FragmentGroupItemsListBinding
 import com.fimappware.willofthegods.ui.MainActivity
+import com.fimappware.willofthegods.ui.RandomResultDialog
 import com.google.android.material.snackbar.Snackbar
 import eltos.simpledialogfragment.SimpleDialog
 import eltos.simpledialogfragment.color.SimpleColorDialog
 import eltos.simpledialogfragment.form.ColorField
 import eltos.simpledialogfragment.form.Input
 import eltos.simpledialogfragment.form.SimpleFormDialog
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.random.Random
 
 private const val TAG = "MFC-GroupItemsListFrag"
@@ -39,7 +44,7 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler, Simp
     private lateinit var binding : FragmentGroupItemsListBinding
     private var groupId = 0L
     private var editingItem : GroupItem? = null
-    //private var deletedItem : GroupItem? = null
+    private var goClicked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +78,7 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler, Simp
             listAdapter.submitList(it.toMutableList())
         }
 
-        vm.getEnabledItemsInGroup(groupId).observe(viewLifecycleOwner){
+        vm.getEnabledItemsInGroupLive(groupId).observe(viewLifecycleOwner){
             binding.goButton.isEnabled = it.size > 1
         }
 
@@ -153,11 +158,6 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler, Simp
         }
     }
 
-    private fun onGoClicked() {
-        //todo : get rid of all this
-        Log.d("MFC", "Go Clicked")
-    }
-
     override fun onSwitchClicked(groupItem: GroupItem, isChecked: Boolean) {
         vm.setItemEnabled(groupItem.id, isChecked)
     }
@@ -219,6 +219,22 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler, Simp
             else -> false
         }
     }
+
+    private fun onGoClicked() = lifecycleScope.launch {
+        val choices = withContext(Dispatchers.Default) {
+            vm.getEnabledItemsInGroup(groupId)
+        }
+        val index = Random.nextInt(choices.size)
+        val winner = choices[index]
+
+        RandomResultDialog.build()
+            .title("The gods say.....")
+            .text(winner.itemText)
+            .color(winner.color)
+            //.pos("OK")
+            .show(this@GroupItemsListFragment, "TESTING")
+    }
+
 
     companion object {
         const val ARG_GROUP_ID = "GroupId"
