@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/groupListFragment"
         android:name="com.fimappware.willofthegods.ui.group.GroupListFragment"
-        android:label="Group List"
+        android:label="@string/choice_groups"
         tools:layout="@layout/fragment_group_list">
         <action
             android:id="@+id/action_groupListFragment_to_groupItemsListFragment"
@@ -17,20 +17,5 @@
         android:id="@+id/groupItemsListFragment"
         android:name="com.fimappware.willofthegods.ui.groupitem.GroupItemsListFragment"
         android:label=""
-        tools:layout="@layout/fragment_group_items_list" >
-        <action
-            android:id="@+id/action_groupItemsListFragment_to_addEditItemFragment"
-            app:destination="@id/addEditItemFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/addEditItemFragment"
-        android:name="com.fimappware.willofthegods.ui.groupitem.AddEditItemFragment"
-
-        tools:layout="@layout/fragment_add_edit_item" >
-        <argument
-            android:name="item"
-            app:argType="com.fimappware.willofthegods.data.GroupItem"
-            app:nullable="true"
-            android:defaultValue="@null" />
-    </fragment>
+        tools:layout="@layout/fragment_group_items_list" />
 </navigation>
