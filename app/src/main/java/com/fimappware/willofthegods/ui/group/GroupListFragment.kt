@@ -107,24 +107,24 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler, SimpleDi
 
     private fun addGroup() {
         SimpleInputDialog.build()
-            .title("Add Group")
+            .title(R.string.add_group)
             .inputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES)
-            .hint("Group Name")
+            .hint(R.string.group_name)
             .cancelable(false)
-            .pos("OK")
-            .neg("CANCEL")
+            .pos(R.string.ok)
+            .neg(R.string.cancel)
             .show(this, ADD_GROUP_DIALOG)
     }
 
     private fun editGroup(group : Group){
         editingGroup = group
         SimpleInputDialog.build()
-            .title("Edit Group")
+            .title(R.string.edit_group)
             .inputType(InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_SENTENCES)
-            .hint("Group Name")
+            .hint(R.string.group_name)
             .text(group.Name)
-            .neg("CANCEL")
-            .pos("OK")
+            .neg(R.string.cancel)
+            .pos(R.string.ok)
             .cancelable(false)
             .show(this, EDIT_GROUP_DIALOG)
     }
@@ -134,10 +134,11 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler, SimpleDi
         vm.deleteGroup(group.id)
         Snackbar.make(
             requireView().findViewById(R.id.groupListConstraintLayout),
-            "Group ${group.Name} deleted",
+            //"Group ${group.Name} deleted",
+            getString(R.string.group_deleted,group.Name),
             Snackbar.LENGTH_LONG
         )
-            .setAction("undo") {
+            .setAction(R.string.undo) {
                 vm.addGroup(group)
             }.addCallback(object : Snackbar.Callback() {
                 override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {

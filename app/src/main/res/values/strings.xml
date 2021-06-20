@@ -1,24 +1,31 @@
 <resources>
-    <string name="app_name">Will of the gods</string>
+    <string name="app_name">Make Up My Mind!</string>
     <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-
 
     <string name="numbers">Numbers</string>
     <string name="lists">Lists</string>
     <string name="dice">Dice</string>
+
     <string name="go">GO!</string>
     <string name="ok">@android:string/ok</string>
     <string name="cancel">@android:string/cancel</string>
+
     <string name="group_name">Group Name</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="save">save</string>
     <string name="enter_text">Enter Text</string>
+    <string name="how_can_i_help">How can I help?</string>
+    <string name="add_button">Add Button</string>
+    <string name="add_choice">Add a Choice</string>
+    <string name="edit_choice">Edit Choice</string>
+    <string name="color">Color</string>
+    <string name="text">Enter text here</string>
+    <string name="result_title">I choose...</string>
+    <string name="add_group">Add Group</string>
+    <string name="edit_group">Edit Group</string>
+    <string name="group_deleted">group %1$s deleted</string>
+    <string name="undo">undo</string>
+    <string name="save">save</string>
+    <string name="choice_groups">Choice Groups</string>
+    <string name="no_groups_defined">Press + to add a choice group.</string>
 
 
 </resources>

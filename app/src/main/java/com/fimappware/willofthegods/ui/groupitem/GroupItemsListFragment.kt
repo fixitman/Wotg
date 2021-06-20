@@ -3,7 +3,6 @@ package com.fimappware.willofthegods.ui.groupitem
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -133,19 +132,19 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler, Simp
         val colors = resources.getIntArray(SimpleColorDialog.MATERIAL_COLOR_PALLET_LIGHT)
         val color = colors[Random.nextInt(colors.size)]
         SimpleFormDialog.build()
-            .title("Edit Item")
+            .title(R.string.add_choice)
             .cancelable(false)
-            .pos("OK")
-            .neg("CANCEL")
+            .pos(R.string.ok)
+            .neg(R.string.cancel)
             .fields(
                 Input.plain(FIELD_TEXT)
-                    .hint("Text")
+                    .hint(R.string.text)
                     .inputType(InputType.TYPE_CLASS_TEXT)
                     .required(),
                 ColorField.picker(FIELD_COLOR)
                     .allowCustom(false)
                     .color(color)
-                    .label("Color")
+                    .label(R.string.color)
                     .colors(requireContext(),SimpleColorDialog.MATERIAL_COLOR_PALLET_LIGHT)
             )
             .show(this,ADD_ITEM_DIALOG)
@@ -163,27 +162,26 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler, Simp
     }
 
     override fun onItemClicked(groupItem: GroupItem) {
-        Log.d("MFC", "Item Clicked : ${groupItem.itemText}")
-        editItem(groupItem)
+       editItem(groupItem)
     }
 
     private fun editItem(item: GroupItem){
         editingItem = item
         SimpleFormDialog.build()
-            .title("Edit Item")
+            .title(R.string.edit_choice)
             .cancelable(false)
-            .pos("OK")
-            .neg("CANCEL")
+            .pos(R.string.ok)
+            .neg(R.string.cancel)
             .fields(
                 Input.plain(FIELD_TEXT)
-                    .hint("Text")
+                    .hint(R.string.text)
                     .inputType(InputType.TYPE_CLASS_TEXT)
                     .text(item.itemText)
                     .required(),
                 ColorField.picker(FIELD_COLOR)
                     .allowCustom(false)
                     .color(item.color)
-                    .label("Color")
+                    .label(R.string.color)
                     .colors(requireContext(),SimpleColorDialog.MATERIAL_COLOR_PALLET_LIGHT)
             )
             .show(this,EDIT_ITEM_DIALOG)
@@ -228,11 +226,11 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler, Simp
         val winner = choices[index]
 
         RandomResultDialog.build()
-            .title("The gods say.....")
+            .title(R.string.result_title)
             .text(winner.itemText)
             .color(winner.color)
             //.pos("OK")
-            .show(this@GroupItemsListFragment, "TESTING")
+            .show(this@GroupItemsListFragment, RESULT_DIALOG)
     }
 
 
@@ -242,5 +240,6 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler, Simp
         const val FIELD_COLOR = "Color"
         const val EDIT_ITEM_DIALOG = "Edit Item Dialog"
         const val ADD_ITEM_DIALOG = "Add Item Dialog"
+        const val RESULT_DIALOG = "Result Dialog"
     }
 }
