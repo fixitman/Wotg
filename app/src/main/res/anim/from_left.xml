@@ -4,7 +4,7 @@
         android:fromXDelta="-300%"
         android:fromYDelta="0"
         android:duration="500"
-        android:startOffset="2000"
+        android:startOffset="1500"
         />
 
 
