@@ -6,7 +6,7 @@
     <string name="lists">Lists</string>
     <string name="dice">Dice</string>
 
-    <string name="go">GO!</string>
+    <string name="go">Choose!</string>
     <string name="ok">@android:string/ok</string>
     <string name="cancel">@android:string/cancel</string>
 
@@ -18,7 +18,7 @@
     <string name="edit_choice">Edit Choice</string>
     <string name="color">Color</string>
     <string name="text">Enter text here</string>
-    <string name="result_title">I choose...</string>
+    <string name="result_title">I choose…</string>
     <string name="add_group">Add Group</string>
     <string name="edit_group">Edit Group</string>
     <string name="group_deleted">group %1$s deleted</string>
