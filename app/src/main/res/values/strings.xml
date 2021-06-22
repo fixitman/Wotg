@@ -6,7 +6,7 @@
     <string name="lists">Lists</string>
     <string name="dice">Dice</string>
 
-    <string name="go">Choose!</string>
+    <string name="choose">Choose!</string>
     <string name="ok">@android:string/ok</string>
     <string name="cancel">@android:string/cancel</string>
 
@@ -27,5 +27,7 @@
     <string name="choice_groups">Choice Groups</string>
     <string name="no_groups_defined">Press + to add a choice group.</string>
 
+    <string name="pick_a_number">Pick a number…</string>
+    <string name="go">Go!</string>
 
 </resources>

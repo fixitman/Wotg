@@ -18,4 +18,9 @@
         android:name="com.fimappware.willofthegods.ui.groupitem.GroupItemsListFragment"
         android:label=""
         tools:layout="@layout/fragment_group_items_list" />
+    <fragment
+        android:id="@+id/numberFragment"
+        android:name="com.fimappware.willofthegods.ui.numbers.NumbersFragment"
+        android:label="@string/pick_a_number"
+        tools:layout="@layout/numbers_fragment" />
 </navigation>

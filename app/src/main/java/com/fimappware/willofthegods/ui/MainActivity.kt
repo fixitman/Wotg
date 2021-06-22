@@ -24,7 +24,8 @@ class MainActivity : AppCompatActivity() {
         //set up navigation on appBar and bottomNav
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-        appBarConfiguration = AppBarConfiguration(navController.graph)
+        //appBarConfiguration = AppBarConfiguration(navController.graph)
+        appBarConfiguration = AppBarConfiguration(setOf(R.id.numberFragment,R.id.groupListFragment))
             //todo change to set of 3 start fragments corresponding to bottom nav destinations)
 
         setupActionBarWithNavController(navController, appBarConfiguration)
