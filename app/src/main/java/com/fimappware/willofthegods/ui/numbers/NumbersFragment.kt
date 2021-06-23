@@ -7,19 +7,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import com.fimappware.willofthegods.data.AppDb
 import com.fimappware.willofthegods.databinding.NumbersFragmentBinding
+import com.fimappware.willofthegods.hideKeyboard
+import com.fimappware.willofthegods.isNumber
+import com.fimappware.willofthegods.ui.group.AppViewModel
 import eltos.simpledialogfragment.SimpleDialog
 import java.util.*
 
 class NumbersFragment : Fragment() {
 
     companion object {
-        const val STATE_FROM = "StateFrom"
-        const val STATE_TO = "StateTo"
+
     }
 
-    private var mFrom = 0
-    private var mTo = 0
+    private val vm : AppViewModel by lazy{
+        val appDb = AppDb.getInstance(requireContext())
+        val factory = AppViewModel.Factory(appDb)
+        ViewModelProvider(requireActivity(),factory).get(AppViewModel::class.java)
+    }
 
     private lateinit var bind : NumbersFragmentBinding
 
@@ -33,39 +40,59 @@ class NumbersFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        savedInstanceState?.let{
-            val f = savedInstanceState.getInt(STATE_FROM,1).toString()
-            val t = savedInstanceState.getInt(STATE_TO,10).toString()
-            bind.etFrom.setText(f)
-            bind.etTo.setText(t)
-        }
+
+        bind.etFrom.setText(vm.from.toString())
+        bind.etTo.setText(vm.to.toString())
+
         bind.button.setOnClickListener { _ ->
             onGoClick()
         }
+
         bind.etTo.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                mTo = s.toString().toInt()
+                vm.to = if(s.toString().isNumber()) s.toString().toInt() else 0
             }
         })
         bind.etFrom.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                mFrom = s.toString().toInt()
+                vm.from = if(s.toString().isNumber()) s.toString().toInt() else 0
+
             }
         })
     }
 
     private fun onGoClick() {
-        if(mTo <= mFrom){
+
+        var s = bind.etFrom.text.toString()
+        if(!s.isNumber()){
+            SimpleDialog.build()
+                .title("Error")
+                .msg("From value must a number")
+                .show(this,"ErrorDialog")
+            bind.etFrom.selectAll()
+            return
+        }
+        s = bind.etTo.text.toString()
+        if(!s.isNumber()){
+            SimpleDialog.build()
+                .title("Error")
+                .msg("To value must be a number")
+                .show(this,"ErrorDialog")
+            return
+        }
+
+        hideKeyboard()
+        if(vm.to <= vm.from){
             SimpleDialog.build()
                 .title("Error")
                 .msg("From value must me greater than To value")
                 .show(this,"ErrorDialog")
         }else {
-            val result = Random().nextInt(mTo-mFrom+1) + mFrom
+            val result = Random().nextInt(vm.to-vm.from+1) + vm.from
             SimpleDialog.build()
                 .title("Result")
                 .msg("I pick... $result")
@@ -73,9 +100,6 @@ class NumbersFragment : Fragment() {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putInt(STATE_FROM,mFrom)
-        outState.putInt(STATE_TO,mTo)
-        super.onSaveInstanceState(outState)
-    }
+
+
 }

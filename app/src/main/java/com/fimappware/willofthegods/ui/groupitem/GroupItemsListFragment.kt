@@ -19,6 +19,7 @@ import com.fimappware.willofthegods.data.GroupItem
 import com.fimappware.willofthegods.databinding.FragmentGroupItemsListBinding
 import com.fimappware.willofthegods.ui.MainActivity
 import com.fimappware.willofthegods.ui.RandomResultDialog
+import com.fimappware.willofthegods.ui.group.AppViewModel
 import com.google.android.material.snackbar.Snackbar
 import eltos.simpledialogfragment.SimpleDialog
 import eltos.simpledialogfragment.color.SimpleColorDialog
@@ -33,10 +34,10 @@ import kotlin.random.Random
 private const val TAG = "MFC-GroupItemsListFrag"
 class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler, SimpleDialog.OnDialogResultListener{
 
-    private val vm : ItemListViewModel by lazy{
+    private val vm : AppViewModel by lazy{
         val appDb = AppDb.getInstance(requireContext())
-        val factory = ItemListViewModel.Factory(groupId, appDb)
-        ViewModelProvider(requireActivity(),factory).get(ItemListViewModel::class.java)
+        val factory = AppViewModel.Factory(appDb)
+        ViewModelProvider(requireActivity(),factory).get(AppViewModel::class.java)
     }
 
     private lateinit var listAdapter : ItemListAdapter

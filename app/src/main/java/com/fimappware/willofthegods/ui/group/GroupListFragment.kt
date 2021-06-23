@@ -36,10 +36,10 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler, SimpleDi
     private var editingGroup : Group? = null
 
 
-    private val vm : GroupViewModel by lazy{
+    private val vm : AppViewModel by lazy{
         val appDb = AppDb.getInstance(requireContext())
-        val factory = GroupViewModel.Factory( appDb)
-        ViewModelProvider(requireActivity(),factory).get(GroupViewModel::class.java)
+        val factory = AppViewModel.Factory( appDb)
+        ViewModelProvider(requireActivity(),factory).get(AppViewModel::class.java)
     }
 
     override fun onCreateView(
