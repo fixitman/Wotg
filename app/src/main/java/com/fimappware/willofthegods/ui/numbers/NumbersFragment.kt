@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.fimappware.willofthegods.data.AppDb
@@ -55,6 +56,13 @@ class NumbersFragment : Fragment() {
                 vm.to = if(s.toString().isNumber()) s.toString().toInt() else 0
             }
         })
+
+        bind.etTo.setOnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                onGoClick()
+            }
+            true
+        }
         bind.etFrom.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
