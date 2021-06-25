@@ -114,20 +114,9 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler, Simp
         )
             .setAction("undo") {
                 vm.insertItem(groupItem)
-            }.addCallback(object : Snackbar.Callback() {
-                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                    super.onDismissed(transientBottomBar, event)
-                    //deletedItem = null
-                }
-            }).show()
+            }.show()
     }
 
-//    private fun undoDelete(groupItem: GroupItem) {
-//        deletedItem?.let {
-//            vm.insertItem(it)
-//            deletedItem = null
-//        }
-//    }
 
     private fun addItem() {
         val colors = resources.getIntArray(SimpleColorDialog.MATERIAL_COLOR_PALLET_LIGHT)

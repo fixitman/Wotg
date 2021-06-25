@@ -134,17 +134,12 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler, SimpleDi
         vm.deleteGroup(group.id)
         Snackbar.make(
             requireView().findViewById(R.id.groupListConstraintLayout),
-            //"Group ${group.Name} deleted",
             getString(R.string.group_deleted,group.Name),
             Snackbar.LENGTH_LONG
         )
             .setAction(R.string.undo) {
                 vm.addGroup(group)
-            }.addCallback(object : Snackbar.Callback() {
-                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                    super.onDismissed(transientBottomBar, event)
-                }
-            }).show()
+            }.show()
     }
 
     // required by  GroupListAdapter.CallbackHandler
