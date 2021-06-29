@@ -21,7 +21,7 @@ fun Context.hideKeyboard(view: View) {
 
 fun String.isNumber(): Boolean {
     return try {
-        this.toInt()
+        this.toLong()
         true
     } catch (ex: NumberFormatException) {
         false

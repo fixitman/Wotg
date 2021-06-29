@@ -88,8 +88,8 @@ class AppViewModel(private val appDb: AppDb) : ViewModel() {
 //=================================================================================================
 //  Numbers stuff
 
-    var from : Int = 1
-    var to : Int = 10
+    var from : Long = 1L
+    var to : Long = 10L
 
 
 

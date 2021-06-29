@@ -15,13 +15,10 @@ import com.fimappware.willofthegods.hideKeyboard
 import com.fimappware.willofthegods.isNumber
 import com.fimappware.willofthegods.ui.group.AppViewModel
 import eltos.simpledialogfragment.SimpleDialog
-import java.util.*
+import kotlin.random.Random
+
 
 class NumbersFragment : Fragment() {
-
-    companion object {
-
-    }
 
     private val vm : AppViewModel by lazy{
         val appDb = AppDb.getInstance(requireContext())
@@ -44,70 +41,55 @@ class NumbersFragment : Fragment() {
 
         bind.etFrom.setText(vm.from.toString())
         bind.etTo.setText(vm.to.toString())
-
-        bind.button.setOnClickListener { _ ->
-            onGoClick()
-        }
+        bind.button.setOnClickListener { _ -> onGoClick()  }
 
         bind.etTo.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                vm.to = if(s.toString().isNumber()) s.toString().toInt() else 0
+                vm.to = if(s.toString().isNumber()) s.toString().toLong() else 0
             }
         })
 
-        bind.etTo.setOnEditorActionListener { v, actionId, event ->
+        bind.etTo.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 onGoClick()
             }
             true
         }
+
         bind.etFrom.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                vm.from = if(s.toString().isNumber()) s.toString().toInt() else 0
-
+                vm.from = if(s.toString().isNumber()) s.toString().toLong() else 0
             }
         })
     }
 
     private fun onGoClick() {
 
-        var s = bind.etFrom.text.toString()
-        if(!s.isNumber()){
+        if(!bind.etFrom.text.toString().isNumber() ||
+            !bind.etTo.text.toString().isNumber()  ){
             SimpleDialog.build()
                 .title("Error")
-                .msg("From value must a number")
+                .msg("Value must a number")
                 .show(this,"ErrorDialog")
-            bind.etFrom.selectAll()
-            return
-        }
-        s = bind.etTo.text.toString()
-        if(!s.isNumber()){
-            SimpleDialog.build()
-                .title("Error")
-                .msg("To value must be a number")
-                .show(this,"ErrorDialog")
-            return
+           return
         }
 
         hideKeyboard()
-        if(vm.to <= vm.from){
-            SimpleDialog.build()
-                .title("Error")
-                .msg("From value must me greater than To value")
-                .show(this,"ErrorDialog")
-        }else {
-            val result = Random().nextInt(vm.to-vm.from+1) + vm.from
-            SimpleDialog.build()
-                .title("Result")
-                .msg("I pick... $result")
-                .show(this,"NumberResultDialog")
+
+        if(vm.to < vm.from){
+            val temp = vm.from
+            vm.from = vm.to
+            vm.to = temp
         }
+
+        val result = Random.nextLong(vm.to - vm.from + 1) + vm.from
+        SimpleDialog.build()
+            .title("Result")
+            .msg("I pick... $result")
+            .show(this,"NumberResultDialog")
     }
-
-
-
 }
