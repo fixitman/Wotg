@@ -1,4 +1,4 @@
-package com.fimappware.willofthegods.ui.group
+package com.fimappware.willofthegods.ui
 
 import android.util.Log
 import androidx.lifecycle.LiveData

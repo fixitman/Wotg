@@ -13,7 +13,7 @@ import com.fimappware.willofthegods.data.AppDb
 import com.fimappware.willofthegods.databinding.NumbersFragmentBinding
 import com.fimappware.willofthegods.hideKeyboard
 import com.fimappware.willofthegods.isNumber
-import com.fimappware.willofthegods.ui.group.AppViewModel
+import com.fimappware.willofthegods.ui.AppViewModel
 import eltos.simpledialogfragment.SimpleDialog
 import kotlin.random.Random
 

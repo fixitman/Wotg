@@ -19,7 +19,7 @@ import com.fimappware.willofthegods.data.GroupItem
 import com.fimappware.willofthegods.databinding.FragmentGroupItemsListBinding
 import com.fimappware.willofthegods.ui.MainActivity
 import com.fimappware.willofthegods.ui.RandomResultDialog
-import com.fimappware.willofthegods.ui.group.AppViewModel
+import com.fimappware.willofthegods.ui.AppViewModel
 import com.google.android.material.snackbar.Snackbar
 import eltos.simpledialogfragment.SimpleDialog
 import eltos.simpledialogfragment.color.SimpleColorDialog

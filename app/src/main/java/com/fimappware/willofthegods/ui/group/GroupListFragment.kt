@@ -20,6 +20,7 @@ import com.fimappware.willofthegods.SwipeLeftCallback
 import com.fimappware.willofthegods.data.AppDb
 import com.fimappware.willofthegods.data.Group
 import com.fimappware.willofthegods.databinding.FragmentGroupListBinding
+import com.fimappware.willofthegods.ui.AppViewModel
 import com.fimappware.willofthegods.ui.groupitem.GroupItemsListFragment
 import com.google.android.material.snackbar.Snackbar
 import eltos.simpledialogfragment.SimpleDialog
