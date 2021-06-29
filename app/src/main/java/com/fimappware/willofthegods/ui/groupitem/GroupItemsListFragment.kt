@@ -17,9 +17,9 @@ import com.fimappware.willofthegods.SwipeLeftCallback
 import com.fimappware.willofthegods.data.AppDb
 import com.fimappware.willofthegods.data.GroupItem
 import com.fimappware.willofthegods.databinding.FragmentGroupItemsListBinding
+import com.fimappware.willofthegods.ui.AppViewModel
 import com.fimappware.willofthegods.ui.MainActivity
 import com.fimappware.willofthegods.ui.RandomResultDialog
-import com.fimappware.willofthegods.ui.AppViewModel
 import com.google.android.material.snackbar.Snackbar
 import eltos.simpledialogfragment.SimpleDialog
 import eltos.simpledialogfragment.color.SimpleColorDialog
@@ -44,18 +44,11 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler, Simp
     private lateinit var binding : FragmentGroupItemsListBinding
     private var groupId = 0L
     private var editingItem : GroupItem? = null
-    private var goClicked = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val args = requireArguments()
-        groupId = args.getLong(ARG_GROUP_ID, 0L)
-        if(groupId == 0L){
-            throw java.lang.IllegalArgumentException("No GroupId Supplied")
-        }
         listAdapter = ItemListAdapter(this)
-        vm.setGroupId(groupId)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -225,7 +218,6 @@ class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler, Simp
 
 
     companion object {
-        const val ARG_GROUP_ID = "GroupId"
         const val FIELD_TEXT = "Text"
         const val FIELD_COLOR = "Color"
         const val EDIT_ITEM_DIALOG = "Edit Item Dialog"

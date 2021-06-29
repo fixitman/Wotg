@@ -6,7 +6,6 @@ import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -21,7 +20,6 @@ import com.fimappware.willofthegods.data.AppDb
 import com.fimappware.willofthegods.data.Group
 import com.fimappware.willofthegods.databinding.FragmentGroupListBinding
 import com.fimappware.willofthegods.ui.AppViewModel
-import com.fimappware.willofthegods.ui.groupitem.GroupItemsListFragment
 import com.google.android.material.snackbar.Snackbar
 import eltos.simpledialogfragment.SimpleDialog
 import eltos.simpledialogfragment.input.SimpleInputDialog
@@ -145,8 +143,8 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler, SimpleDi
 
     // required by  GroupListAdapter.CallbackHandler
     override fun groupClicked(id: Long) {
-        val arguments = bundleOf(GroupItemsListFragment.ARG_GROUP_ID to id)
-        navController.navigate(R.id.action_groupListFragment_to_groupItemsListFragment, arguments)
+        vm.setGroupId(id)
+        navController.navigate(R.id.action_groupListFragment_to_groupItemsListFragment)
     }
 
     override fun onResult(dialogTag: String, which: Int, extras: Bundle): Boolean {
