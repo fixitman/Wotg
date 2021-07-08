@@ -51,7 +51,7 @@ abstract class SwipeRightCallback(context: Context) : ItemTouchHelper.SimpleCall
 
         // Draw the green edit background
         background.color = backgroundColor
-        background.setBounds(itemView.left + dX.toInt(), itemView.top, itemView.left, itemView.bottom)
+        background.setBounds(itemView.left , itemView.top, itemView.left + dX.toInt(), itemView.bottom)
         background.draw(c)
 
         // Calculate position of edit icon
