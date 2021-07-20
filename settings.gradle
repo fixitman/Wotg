@@ -1,3 +1,2 @@
 include ':app'
 rootProject.name = "Will of the gods"
-include ':pictures_module'
