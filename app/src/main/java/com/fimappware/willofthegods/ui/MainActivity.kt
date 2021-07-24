@@ -27,14 +27,10 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
         prefs = getPreferences(Context.MODE_PRIVATE)
 
-
-
         //set up navigation on appBar and bottomNav
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-        //appBarConfiguration = AppBarConfiguration(navController.graph)
         appBarConfiguration = AppBarConfiguration(tabs)
-            //todo change to set of 3 start fragments corresponding to bottom nav destinations)
 
         val graph = navController.navInflater.inflate(R.navigation.nav_graph)
         graph.startDestination = prefs.getInt(PREF_START_TAB,R.id.numberFragment)
