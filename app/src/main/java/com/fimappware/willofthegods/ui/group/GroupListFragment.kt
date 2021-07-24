@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fimappware.navigation.SwipeRightCallback
 import com.fimappware.willofthegods.R
 import com.fimappware.willofthegods.SwipeLeftCallback
-import com.fimappware.willofthegods.data.AppDb
 import com.fimappware.willofthegods.data.Group
 import com.fimappware.willofthegods.databinding.FragmentGroupListBinding
 import com.fimappware.willofthegods.ui.AppViewModel
@@ -35,11 +34,12 @@ class GroupListFragment : Fragment(), GroupListAdapter.CallbackHandler, SimpleDi
     private var editingGroup : Group? = null
 
 
-    private val vm : AppViewModel by lazy{
-        val appDb = AppDb.getInstance(requireContext())
-        val factory = AppViewModel.Factory( appDb)
-        ViewModelProvider(requireActivity(),factory).get(AppViewModel::class.java)
-    }
+//    private val vm : AppViewModel by lazy{
+//        val appDb = AppDb.getInstance(requireContext())
+//        val factory = AppViewModel.Factory( appDb)
+//        ViewModelProvider(requireActivity(),factory).get(AppViewModel::class.java)
+//    }
+    private val vm : AppViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

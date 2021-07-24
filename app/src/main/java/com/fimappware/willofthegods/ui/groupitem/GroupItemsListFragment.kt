@@ -7,14 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fimappware.willofthegods.R
 import com.fimappware.willofthegods.SwipeLeftCallback
-import com.fimappware.willofthegods.data.AppDb
 import com.fimappware.willofthegods.data.GroupItem
 import com.fimappware.willofthegods.databinding.FragmentGroupItemsListBinding
 import com.fimappware.willofthegods.ui.AppViewModel
@@ -34,11 +33,13 @@ import kotlin.random.Random
 private const val TAG = "MFC-GroupItemsListFrag"
 class GroupItemsListFragment : Fragment(), ItemListAdapter.CallbackHandler, SimpleDialog.OnDialogResultListener{
 
-    private val vm : AppViewModel by lazy{
-        val appDb = AppDb.getInstance(requireContext())
-        val factory = AppViewModel.Factory(appDb)
-        ViewModelProvider(requireActivity(),factory).get(AppViewModel::class.java)
-    }
+//    private val vm : AppViewModel by lazy{
+//        val appDb = AppDb.getInstance(requireContext())
+//        val factory = AppViewModel.Factory(appDb)
+//        ViewModelProvider(requireActivity(),factory).get(AppViewModel::class.java)
+//    }
+
+    private val vm : AppViewModel by activityViewModels()
 
     private lateinit var listAdapter : ItemListAdapter
     private lateinit var binding : FragmentGroupItemsListBinding

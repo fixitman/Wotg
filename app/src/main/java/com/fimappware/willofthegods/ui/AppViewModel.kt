@@ -1,9 +1,10 @@
 package com.fimappware.willofthegods.ui
 
+import android.app.Application
+import android.content.Context
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.fimappware.willofthegods.data.AppDb
 import com.fimappware.willofthegods.data.Group
@@ -12,9 +13,16 @@ import kotlinx.coroutines.launch
 
 private const val TAG = "GroupViewModel"
 
-class AppViewModel(private val appDb: AppDb) : ViewModel() {
+class AppViewModel(application: Application) : AndroidViewModel(application) {
+
+
+
+
 //================================================================================================
 //  Group stuff
+
+    private val appDb = AppDb.getInstance(application)
+    private val prefs = application.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
     suspend fun getGroupById(groupId: Long): Group {
         return appDb.groupDao().getById(groupId)
@@ -88,17 +96,26 @@ class AppViewModel(private val appDb: AppDb) : ViewModel() {
 //=================================================================================================
 //  Numbers stuff
 
-    var from : Long = 1L
-    var to : Long = 10L
+    var from = prefs.getLong(PREF_FROM,1)
+    var to = prefs.getLong(PREF_TO,10)
 
 
 
 //=================================================================================================
-    class Factory(private val appDb: AppDb) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            Log.d(TAG, "creating viewModel")
-            return modelClass.getConstructor(AppDb::class.java).newInstance(appDb)
-        }
+//    class Factory(private val appDb: AppDb) : ViewModelProvider.Factory {
+//        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+//            Log.d(TAG, "creating viewModel")
+//            return modelClass.getConstructor(AppDb::class.java).newInstance(appDb)
+//        }
+//    }
+
+
+    companion object{
+
+        const val PREF_FROM = "prefFrom"
+        const val PREF_TO = "prefTo"
+        const val PREF_NAME = "numberPrefs"
+
     }
 }
 
