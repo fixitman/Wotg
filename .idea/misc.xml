@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="JDK" project-jdk-type="JavaSDK">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/mcollins/code/AndroidStudioProjects/Willofthegods/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2703125" />
+        <entry key="..\:/Users/mcollins/code/AndroidStudioProjects/Willofthegods/app/src/main/res/drawable/ic_baseline_priority_high_24.xml" value="0.2703125" />
+        <entry key="..\:/Users/mcollins/code/AndroidStudioProjects/Willofthegods/app/src/main/res/drawable/ic_delete_white_24.xml" value="0.2703125" />
+        <entry key="..\:/Users/mcollins/code/AndroidStudioProjects/Willofthegods/app/src/main/res/drawable/ic_dice_six_faces_five.xml" value="0.2703125" />
+        <entry key="..\:/Users/mcollins/code/AndroidStudioProjects/Willofthegods/app/src/main/res/drawable/ic_dice_twenty_faces_twenty.xml" value="0.2703125" />
+        <entry key="..\:/Users/mcollins/code/AndroidStudioProjects/Willofthegods/app/src/main/res/drawable/ic_edit_white_24.xml" value="0.2703125" />
+        <entry key="..\:/Users/mcollins/code/AndroidStudioProjects/Willofthegods/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2703125" />
+        <entry key="..\:/Users/mcollins/code/AndroidStudioProjects/Willofthegods/app/src/main/res/drawable/ic_list_24.xml" value="0.2703125" />
+        <entry key="..\:/Users/mcollins/code/AndroidStudioProjects/Willofthegods/app/src/main/res/drawable/new_add.xml" value="0.2703125" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
