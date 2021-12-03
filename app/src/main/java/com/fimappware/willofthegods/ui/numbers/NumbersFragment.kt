@@ -76,9 +76,14 @@ class NumbersFragment : Fragment() {
                 prefs.edit().putLong(AppViewModel.PREF_FROM,vm.from).apply()
             }
         })
+        bind.etFrom.setSelectAllOnFocus(true)
+        bind.etTo.setSelectAllOnFocus(true)
     }
 
     private fun onGoClick() {
+
+        bind.etTo.clearFocus()
+        bind.etFrom.clearFocus()
 
         if(!bind.etFrom.text.toString().isNumber() ||
             !bind.etTo.text.toString().isNumber()  ){
