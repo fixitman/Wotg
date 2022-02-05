@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
     buildFeatures {
@@ -16,7 +16,7 @@ android {
     defaultConfig {
         applicationId "com.fimappware.willofthegods"
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 
@@ -59,13 +59,13 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation project(path: ':customviews')
 
-    def room_version = "2.3.0"
+    def room_version = "2.4.1"
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation "androidx.room:room-ktx:$room_version"
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
-    debugImplementation 'im.dino:dbinspector:4.0.0@aar'
+    //debugImplementation 'im.dino:dbinspector:4.0.0@aar'
 
 }

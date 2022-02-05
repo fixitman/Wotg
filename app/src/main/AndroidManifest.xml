@@ -10,7 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WillOfTheGods.NoActionBar.Fullscreen">
         <activity android:name=".ui.SplashActivity"
-            android:theme="@style/Theme.WillOfTheGods.NoActionBar.Fullscreen">
+            android:theme="@style/Theme.WillOfTheGods.NoActionBar.Fullscreen"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
